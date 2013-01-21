@@ -5,7 +5,7 @@ if(!(empty($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK && is_u
 
   $file = $_FILES['file']['tmp_name'];   // Le fichier téléversé
   if($_POST['file_type'] == 'params') { 
-	$dest = '/nemaid3/users_files/user'.$_SESSION['user_id'].'_params.xml'; // Sa destination
+	$dest = '/nemaid31/users_files/user'.$_SESSION['user_id'].'_params.xml'; // Sa destination
 	
   } elseif($_POST['file_type'] == 'sample') {
 	// Incrémentation du nombre de fichier sample du user présent sur le serveur
@@ -14,10 +14,10 @@ if(!(empty($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK && is_u
 	
 	// Création du nom du nouveau fichier sample
 	if(!substr_count($_FILES['file']['name'],$_SESSION['user_id']."_sample"))
-		$dest = '/nemaid3/users_files/'.$_SESSION['nb_sample_saved'].'-user'.$_SESSION['user_id'].'_sample#'.$_FILES['file']['name']; // Sa destination
+		$dest = '/nemaid31/users_files/'.$_SESSION['nb_sample_saved'].'-user'.$_SESSION['user_id'].'_sample#'.$_FILES['file']['name']; // Sa destination
 	else {
-		if(substr_count(substr($_FILES['file']['name'],2),'-')) $dest = '/nemaid3/users_files/'.$_SESSION['nb_sample_saved'].'-'.substr($_FILES['file']['name'],2);
-		else $dest = '/nemaid3/users_files/'.$_SESSION['nb_sample_saved'].'-'.$_FILES['file']['name'];
+		if(substr_count(substr($_FILES['file']['name'],2),'-')) $dest = '/nemaid31/users_files/'.$_SESSION['nb_sample_saved'].'-'.substr($_FILES['file']['name'],2);
+		else $dest = '/nemaid31/users_files/'.$_SESSION['nb_sample_saved'].'-'.$_FILES['file']['name'];
 	}
   
   } else {

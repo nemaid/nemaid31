@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <sample>
-  <remarks></remarks>
+  <remarks>test</remarks>
   <date></date>
-  <char name="LON">1</char>
+  <char name="LON">NULL</char>
   <char name="STY">NULL</char>
   <char name="DGO">NULL</char>
   <char name="EXPO">NULL</char>

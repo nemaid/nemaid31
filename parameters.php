@@ -120,8 +120,10 @@ $genus_name = define_genus();
 				extract($_POST);
 				if (file_exists("users_files/user".$_SESSION['user_id']."_params.xml") && get_xml_data('genus') == $genus_name) {
 					$use_user_params = true; $user_params = get_xml_data('user_params');
+					//echo "test";
 				} else {
 					$use_user_params = false;
+					//echo "testfalse";
 				}
 				
 				$query = mysql_query('SELECT code_char, name_char, weight, correction, explanations, max-min as rangeValue
@@ -132,17 +134,17 @@ $genus_name = define_genus();
 					if($use_user_params) {
 						$weight = $user_params[(string)$row["code_char"]]['weight'];
 						$correction = $user_params[(string)$row["code_char"]]['correction'];
-						$rangeValueValue = $user_params[(string)$row["code_char"]]['rangeValueValue'];
+						$rangeValue = $ç[(string)$row["code_char"]]['rangeValue'];
 					} else {
 						$weight = sprintf('%.2f',round($row["weight"],2));
 						$correction = sprintf('%.2f',round($row["correction"],2));
-						$rangeValueValue = sprintf('%.2f',round($row["rangeValueValue"],2));
+						$rangeValue = sprintf('%.2f',round($row["rangeValue"],2));
 					}
 					echo '<tr>';
 					echo '	<td>'.$row['name_char']; if ($row["explanations"] != NULL) echo '<SUP style="cursor:default;" title="'.$row['explanations'].'">?</SUP></td>';
 					echo '	<td><input class="qt_weight" type="text" name="'.$row["code_char"].'_w" value="'.$weight.'"></td>';
 					echo '	<td><input class="qt_correction" type="text" name="'.$row["code_char"].'_c" value="'.$correction.'"></td>';
-					echo '	<td><input class="qt_rangeValueValue" type="text" name="'.$row["code_char"].'_r" value="'.$rangeValueValue.'"></td>';
+					echo '	<td><input class="qt_rangeValue" type="text" readonly="readonly" name="'.$row["code_char"].'_r" value="'.$rangeValue.'"></td>';
 					echo '</tr>';
 				}
 			?>
@@ -157,7 +159,7 @@ $genus_name = define_genus();
 					<input type="button" value="Defaults values" onclick="default_values('qt_correction')">
 				</td>
 				<td>
-					<input type="button" value="Defaults values" onclick="default_values('qt_rangeValue')">
+					<input type="button" value="Calculate range" onclick="default_values('qt_rangeValue')">
 				</td>
 			</tr>
 			

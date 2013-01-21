@@ -7,7 +7,7 @@ if(!file_exists("default_params.xml")) generate_xml_file('default');
 	
 	<form action="save.php" method="post">
 
-		<input type="radio" name="genus" value="heli1" onclick="show()" checked>Helicotylenchus (Steiner, 1945)</br>
+		<input type="radio" name="genus" value="heli1" onclick="show('listHeli')" checked>Helicotylenchus (Steiner, 1945)</br>
 			<select id="listHeli">
 				<option value="heli1" <?php if($_SESSION['genus_n'] == 'heli1') echo 'checked="true"'; ?> >Helicotylenchus s.l. [sensu Fortuner, 1984]</option>
 				<option value="heli2" <?php if($_SESSION['genus_n'] == 'heli2') echo 'checked="true"'; ?> >Helicotylenchus s.str. [2 genital branches equally developed]</option>
@@ -16,7 +16,7 @@ if(!file_exists("default_params.xml")) generate_xml_file('default');
 			</select>
 			</br>
 			</br>
-		<input type="radio" name="genus" value="apha" onclick="hide()"<?php if($_SESSION['genus_n'] == 'apha') echo 'checked="true"'; ?> >Aphasmatylenchus Sher, 1965
+		<input type="radio" name="genus" value="apha" onclick="hide('listHeli')"<?php if($_SESSION['genus_n'] == 'apha') echo 'checked="true"'; ?> >Aphasmatylenchus Sher, 1965
 		</br>
 		</br>
 		<input type="hidden" name="file_type" value="genus">

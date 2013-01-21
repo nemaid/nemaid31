@@ -1,18 +1,25 @@
 function warningMessChangeTab(sessionStatut, dirPage) {
 	if(sessionStatut == true) {
-		if (confirm("Warning: Change tab during a session will reset all default values and erase all what you have done so far (except what you have saved on your own computer of course). Are you sure you want to do that?"))
+		if (confirm("Warning: Using the Home tab during a session will reset all default values and erase all what you have done so far (except what you have saved on your own computer of course). Are you sure you want to do that?"))
 		{
 		window.location.replace(dirPage);}
 	}
 }
 
-//Function to hide list on select genus
-function hide() {
-	document.getElementById('listHeli').style.visibility = 'hidden';
+function displaySelectedSample()
+{
+	$('#display').html("You have selected : "+$('#sampleListe').val());
 }
 
-function show() {
-	document.getElementById('listHeli').style.visibility = 'visible';
+//Function to hide list on select genus
+function hide(idElement) {
+	//document.getElementById('listHeli').style.visibility = 'hidden';
+	document.getElementById(idElement).style.visibility = 'hidden';
+}
+
+function show(idElement) {
+	//document.getElementById('listHeli').style.visibility = 'visible';
+	document.getElementById(idElement).style.visibility = 'visible';
 }
 
 // Fonctionnement des boutons + pour afficher/masquer les détails

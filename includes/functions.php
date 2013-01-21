@@ -53,6 +53,86 @@ function sqlquery($requete, $number) {
 	}
 }
 
+ 
+/*function CopieFichier($Source, $Destination)
+{
+    $Fichier = fopen ($Source, "r" );
+ 
+    $ContenuFichier ='';
+ 
+    while (!feof($Fichier)) $ContenuFichier .= fread($Fichier, 8192);
+    fclose ($Fichier);
+ 
+    $Fichier = fopen ($Destination, "w+" );
+ 
+    if ( !fwrite($Fichier, $ContenuFichier)) die('Impossible d\'écrire dans le fichier');
+ 
+    fclose ($Fichier);
+}
+ 
+CopieFichier('http://genisys.prd.fr/nemaid31/users_files', 'xml/contacts.xml');*/
+
+ //Fonction qui permet le téléchargement
+     function dl_file($file){
+ 
+        //First, see if the file exists
+        if (!is_file($file)) { die("<b>404 File not found!</b>"); }
+ 
+        //Gather relevent info about file
+        $len = filesize($file);
+        $filename = basename($file);
+        //$file_extension = strtolower(substr(strrchr($filename,"."),1));
+ 
+        //This will set the Content-Type to the appropriate setting for the file
+        switch( $file_extension ) {
+              case "pdf": $ctype="application/pdf"; break;
+          case "exe": $ctype="application/octet-stream"; break;
+          case "zip": $ctype="application/zip"; break;
+          case "doc": $ctype="application/msword"; break;
+          case "xls": $ctype="application/vnd.ms-excel"; break;
+          case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
+          case "gif": $ctype="image/gif"; break;
+          case "png": $ctype="image/png"; break;
+          case "jpeg":
+          case "jpg": $ctype="image/jpg"; break;
+          case "mp3": $ctype="audio/mpeg"; break;
+          case "wav": $ctype="audio/x-wav"; break;
+          case "mpeg":
+          case "mpg":
+		  case "xml": $ctype="application/xml"; break;
+          case "mpe": $ctype="video/mpeg"; break;
+          case "mov": $ctype="video/quicktime"; break;
+          case "avi": $ctype="video/x-msvideo"; break;
+ 
+          //The following are for extensions that shouldn't be downloaded (sensitive stuff, like php files)
+          case "php":
+          case "htm":
+          case "html":
+          case "txt": die("<b>Cannot be used for ". $file_extension ." files!</b>"); break;
+ 
+          default: $ctype="application/force-download";
+        }
+ 
+        //Begin writing headers
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: public");
+        header("Content-Description: File Transfer");
+ 
+        //Use the switch-generated Content-Type
+        header("Content-Type: $ctype");
+ 
+        //Force the download
+        $header="Content-Disposition: attachment; filename=".$filename.";";
+        header($header );
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Length: ".$len);
+        @readfile($file);
+        exit;
+     }
+ 
+    
 
 function connexion_bdd() {
 	//Définition des variables de connexion à la base de données
@@ -233,9 +313,17 @@ function generate_xml_file($gen) {
 			generate_xml_content($row_genus[0], $dom, $root, true);
 		}
 		$dom->save("default_params.xml");
+		dl_file ( $_GET("users_files/user.default_params.xml" ));
 	} else {
 		generate_xml_content($gen, $dom, $root, false);
 		$dom->save("users_files/user".$_SESSION['user_id']."_params.xml");
+		dl_file ("users_files/user".$_SESSION['user_id']."_params.xml") ;
+		//déclenche le téléchargement du fichier xml de paramètres
+		/*$url = ('users_files/user'.$_SESSION['user_id']."_params.xml");
+    header('Content-Description: xml download');
+    header('Content-Type: .xml');
+    header('Content-Disposition: attachment; filename="'. basename($url) .'";');
+    @readfile($url) OR die();*/
 	}
 	
 	mysql_close();

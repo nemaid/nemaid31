@@ -19,7 +19,7 @@ if(isset($_POST)) {
 		if (mysql_num_rows($req) > 0) {
 			$data = mysql_fetch_assoc($req);
 			
-			// Le mot de passe est-il correct 
+			// Le mot de passe est-il correct ?
 			if($data['password'] !== md5($password)) {  
 				$informations = Array(true,'Wrong password',ROOTPATH.'/index.php',5);
 				require_once('informations.php');

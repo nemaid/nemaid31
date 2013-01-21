@@ -35,19 +35,18 @@ include('includes/functions.php');
 							<table class="menu">
 								<tr>	
 									<?php 
-									if (curPageName()!='main.php' && curPageName()!='visuBDD.php' && curPageName()!='FAQ.php' && curPageName()!='select_genus.php') {
+									if (curPageName()=='new_sample.php') {
 										echo'<td class="menu"><a href="javascript:warningMessChangeTab(true,\'main.php\')">Home</a></td>';
-										echo'<td class="menu"><a href="javascript:warningMessChangeTab(true,\'select_genus.php\')">Select genus</a></td>';						
-										echo'<td class="menu"><a href="javascript:warningMessChangeTab(true,\'new_sample.php\')">Your samples</a></td>';
-										echo'<td class="menu"><a href="javascript:warningMessChangeTab(true,\'parameters.php\')">Set parameters</a></td>';
-										echo'<td class="menu"><a href="javascript:warningMessChangeTab(true,\'comparaison.php\')">Perform a comparison</a></td>';
+										echo'<td class="menu"><a href="select_genus.php">Select genus</a></td>';		
+										echo'<td class="menu"><a href="new_sample.php">Your samples</a></td>';
+										echo'<td class="menu"><a href="parameters.php">Set parameters</a></td>';
+										echo'<td class="menu"><a href="comparaison.php">Perform a comparison</a></td>';
 
 										if(isset($_SESSION['admin']))
 											echo '<td class="menu"><a href="administration.php">Database Management</a></td>';
 										else
-											echo '<td class="menu"><a href="javascript:warningMessChangeTab(true,\'visuBDD.php\')">Databases</a></td>';
-						
-										echo'<td class="menu"><a href="javascript:warningMessChangeTab(true,\'FAQ.php\')">Help</a></td>';
+											echo '<td class="menu"><a href="visuBDD.php">Databases</a></td>';
+									echo'<td class="menu"><a href="FAQ.php">Help</a></td>';
 									}
 									else {
 										echo'<td class="menu"><a href="main.php">Home</a></td>';

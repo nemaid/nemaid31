@@ -10,13 +10,21 @@ include('includes/haut.php');
 		<form action="algorithms.php" method="post">
 		<?php if(!empty($files_list)) {?>
 				<h4>Your samples</h4>
-				<select name="user_sample" multiple size="5">
+				<select id="sampleListe" name="user_sample" multiple size="5" onchange="javascript:displaySelectedSample()">
 					<?php 
 					foreach($files_list as $f) {
-						echo '<option value="'.$f.'">'.substr($f,0,1).' - '.str_replace('.xml','',substr(str_replace("-user".$_SESSION['user_id']."_","",$f),1)) .'</option>';
+						if ($f!=end($files_list)){
+							echo '<option value="'.$f.'" >'.substr($f,0,1).' - '.str_replace('.xml','',substr(str_replace("-user".$_SESSION['user_id']."_","",$f),1)) .'</option>';
+						}
+						else echo '<option value="'.$f.'" selected>'.substr($f,0,1).' - '.str_replace('.xml','',substr(str_replace("-user".$_SESSION['user_id']."_","",$f),1)) .'</option>';
 					}
 					?>
+				
 				</select>
+			
+		<p id="display" > </p>
+		<script language="javascript"> displaySelectedSample(); </script>
+		<input id="selectOtherSamp" type="button" value="Select a different sample" onClick="javascript:warningMessChangeTab(true, 'new_sample.php')">		
 		<?php } else { echo '<p>You must first select one of your saved samples or enter a new one.  <a href="new_sample.php">Click here to be redirected...</a> </p>';} ?>
 			<div style="display:none;">
 				<h4>Database entry</h4> - non fonctionnel
@@ -36,7 +44,7 @@ include('includes/haut.php');
 			<br /><br />
 			<h3>Comparison parameters</h3>
 			<h4>Validity of species</h4>
-			<input type="checkbox" name="validity" value="use_unvalid" checked="true">Include invalid species  <br/> <br/>
+			<input type="checkbox" name="validity" value="use_unvalid">Include invalid species  <br/> <br/>
 			<h4>Type of description</h4>
 			<input type="radio" name="choix" value="mixed" checked="true">Original and composites descriptions <br/>
 			<input type="radio" name="choix" value="composite">Composites descriptions <br/>
