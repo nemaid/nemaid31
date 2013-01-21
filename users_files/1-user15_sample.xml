@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<sample>
+  <remarks></remarks>
+  <date></date>
+  <char name="LON">1900</char>
+  <char name="STY">26</char>
+  <char name="DGO">30</char>
+  <char name="EXPO">190</char>
+  <char name="BAW">1</char>
+  <char name="TAIL">200</char>
+  <char name="TAN">39</char>
+  <char name="PHAS"></char>
+  <char name="a"></char>
+  <char name="c1"></char>
+  <char name="c2"></char>
+  <char name="m"></char>
+  <char name="v"></char>
+  <char name="SPIC"></char>
+  <char name="MALES"></char>
+  <char name="DISC"></char>
+  <char name="CAN"></char>
+  <char name="HAB_1"></char>
+  <char name="HAB_2"></char>
+  <char name="LIP_1"></char>
+  <char name="LIP_2"></char>
+  <char name="INC_1"></char>
+  <char name="INC_2"></char>
+  <char name="LANN_1"></char>
+  <char name="LANN_2"></char>
+  <char name="LANN_3"></char>
+  <char name="KBS_1"></char>
+  <char name="KBS_2"></char>
+  <char name="KBS_3"></char>
+  <char name="TSH_1"></char>
+  <char name="TSH_2"></char>
+  <char name="TSH_3"></char>
+  <char name="TSH_4"></char>
+  <char name="GENB_1"></char>
+  <char name="GENB_2"></char>
+  <char name="GENB_3"></char>
+</sample>

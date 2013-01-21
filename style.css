@@ -1,0 +1,193 @@
+/* /// New CSS /// */
+
+.alinea1
+{
+	margin-left : 20px;
+}
+
+.alinea2
+{
+	margin-left : 40px;
+}
+
+#author
+{
+	/*margin-top : 10px;*/
+	font-style : italic;
+	font-size:10px;
+}
+
+
+/*////////////////////////////////// css de Laure //////////////////////////////////*/
+.details, #loading, #results {display:none;}
+table { border-collapse:collapse; }
+th {text-align:center;}
+td {	border: 1px solid;}td.no_border {border: none;}td.center {text-align:center;}
+
+
+/*////////////////////////////////// css de Cynthia //////////////////////////////////*/
+
+body
+{
+	padding-right: 100px;
+	padding-left: 100px;
+	width: auto; /*Pour que la page s'adapte automatiquement à la résolution du visiteur.*/
+	/*margin: auto;  /*Pour centrer la page.*/
+	/*margin-right: 10px;	/* Idem pour la droite du navigateur. */
+	/*margin-left: 10px;	/* Idem pour la gauche du navigateur. */
+	background-color: lightgrey; /* Couleur d'arrière-plan de la page */
+	/*background-image: url("Images/fonlghtblue.jpg"); /* Image d'arrière-plan des éléments du menu */
+	/*background-repeat: repeat-xy;/**/
+}
+
+p:first-letter
+{
+	padding-left: 50px; /**/
+}
+
+input.alignRight
+{
+	float: right;
+}
+
+td.menu a.link{color:red}           /*les liens en g�n�ral*/
+td.menu a.link:hover{color:orange}  /*quand on passe la souris sur un lien*/
+td.menu a.link:active{color:grey}   /*quand on clique sur le lien*/
+td.menu a.link:visited{color:lightgrey}  /*quand le lien a d�j� �t� visit�*/
+
+table.menu
+{
+	margin-top: 20px;
+}
+
+td.menu
+{
+	padding-right: 25px;
+	padding-left: 25px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border: solid 2px black;
+	color: black;
+	background-color: white;
+}
+
+td.index
+{
+	padding-right: 50px;
+}
+
+fieldset.admin
+{
+	border: 2px solid black;
+}
+
+#content
+{
+	list-style-image: url("Images/nemaPuce.png");
+	padding: 10px;
+	background-color: white; /*rgb(205, 215, 250);/**/
+	border: solid 2px black;
+	color: black;
+	/*background-repeat: repeat-xy; /**/
+}
+
+#admin
+{
+	overflow: scroll;
+}
+
+#header
+{
+   padding: 10px;
+   margin-bottom: 10px;
+   padding-top: 10px;
+   border: solid 2px black;
+   background-color: white; /*rgb(205, 215, 250);/**/
+   color: black;
+   /*background-image: url("../Structure/Images/testBack.jpg"); /* Image d'arri�re-plan des �l�ments du menu */
+   /*background-repeat: no-repeat;/**/
+}
+
+#footer
+{
+	padding: 10px;
+	margin-top: 10px;
+	padding-top: 10px;
+	border: solid 2px black;
+	color: black;
+	background-color: white; /*rgb(205, 215, 250);/**/
+}
+
+#menu_dynamic
+{
+	float: left; /* Position du menu dans la page, ici : à gauche. */
+	width: 215px; /* Largeur du menu */
+	margin: auto;
+	/*background-color: black;/**/
+}
+
+#menu1, #menu2, #menu3, #menu4 {
+	background-image: url("../Structure/Images/Gss1t.png"); /* Image d'arrière-plan des éléments du menu */
+	margin-bottom: 10px; /* Distance séparant chaque petit menus */
+	padding-top: 10px; /* Distance entre bord et contenu */
+	padding-left: 35px; /* Longueur entre la borne gauche de l'encadrement et le début des titres des petits menus */
+	padding-bottom: 18px;
+	font-weight : bold;
+	color: black;
+}
+
+#ss_menu1, #ss_menu2, #ss_menu3, #ss_menu4
+{
+	padding-top: 5px;
+	/*margin-bottom: 10px; /* Distance séparant chaque catégorie */
+	font-weight : normal;
+}
+
+#ss_menu1 ul, #ss_menu2 ul, #ss_menu3 ul, #ss_menu4 ul {
+   list-style-image: url("../Structure/Images/quill5.png"); /* Image pour faire les puces devant chaque catégorie */
+   padding-left: 12px; /* Longueur entre la borne gauche de l'encadrement et le début des puces */
+   margin-bottom: 5px; /* Distance séparant chaque élément d'un même petit menu */
+}
+
+.apparent
+{
+   visibility: visible;
+   display: block;
+}
+
+.cache
+{
+	visibility: hidden;
+	display: none;
+}
+
+#corps 
+{
+	/*width: 1024px;/**/
+	margin-left: 222px; /*Distance entre la borne gauche et le début du corps du texte (ne pas oublier de compter le menu qui fait 215px) */
+	margin-bottom: 20px; /* 20 Distance entre le corps de la page et le pied de page */
+	padding: 5px; /* Marge en haut et en bas, séparant le contenu du corps de ses bords */
+	background-image: url("../Structure/Images/parch.jpg"); /* Image d'arrière-plan */
+	background-repeat: repeat-xy;
+	/*background-color: black; Couleur de fond */
+	/*border: 1px solid black; /* Pour encadrer le corps */
+}
+
+#corps h1
+{
+   /*height: 30px; /* Largeur du titre de type h1 */
+   padding-left: 120px;
+   text-align: left; /* Alignement du titre (à droite = right, à gauche = left, centré = center) */
+}
+
+#corps h3
+{
+   /*height: 30px; /* Largeur du titre de type h1 */
+   padding-left: 120px;
+   text-align: left; /* Alignement du titre (à droite = right, à gauche = left, centré = center) */
+}
+
+#corps p
+{
+	text-indent: 50px;
+}
