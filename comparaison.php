@@ -22,8 +22,7 @@ include('includes/haut.php');
 				
 				</select>
 			
-		<p id="display" > </p>
-		<script language="javascript"> displaySelectedSample(); </script>
+		<p id="display" > <script language="javascript"> displaySelectedSample(); </script> </p>
 		<input id="selectOtherSamp" type="button" value="Select a different sample" onClick="javascript:warningMessChangeTab(true, 'new_sample.php')">		
 		<?php } else { echo '<p>You must first select one of your saved samples or enter a new one.  <a href="new_sample.php">Click here to be redirected...</a> </p>';} ?>
 			<div style="display:none;">

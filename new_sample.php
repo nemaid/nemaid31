@@ -106,6 +106,23 @@ $genus_name = define_genus();
 			specimens presenting that state. <br />Percentages must be entered as decimal values, 
 			not as percents (e.g. enter 0.57 instead of 57%).</p></tr>
 		<table>
+			<tr><h3><br />Sample information</h3></tr>
+
+				<tr>
+					<td>Sample number</td>
+					<td><input type="text" name="sample_id"></td>
+				</tr>
+				<tr>
+					<td>Date of sampling</td>
+					<td><input type="text" name="sample_date"></td>
+				</tr>
+				<tr>
+					<td>Remarks</td>
+					<td><textarea rows="3" name="remarks"></textarea></td>
+				</tr>
+			
+			</table>
+			<table>
 			<tr><h3>Quantitative characters</h3></tr>
 				
 			<tr>
@@ -198,20 +215,6 @@ $genus_name = define_genus();
 				}
 			?>
 			
-			<tr><th><h3><br />Sample information</h3></th></tr>
-
-			<tr>
-				<td>Sample number</td>
-				<td><input type="text" name="sample_id"></td>
-			</tr>
-			<tr>
-				<td>Date of sampling</td>
-				<td><input type="text" name="sample_date"></td>
-			</tr>
-			<tr>
-				<td>Remarks</td>
-				<td><textarea rows="3" name="remarks"></textarea></td>
-			</tr>
 		</table>
 		<br/><br/>
 		<input type="hidden" name="file_type" value="sample">
