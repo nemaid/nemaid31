@@ -2,6 +2,7 @@
 include('includes/haut.php');
 connexion_bdd();
 $genus_name = define_genus();
+//test !
 ?>
 <script type="text/javascript">
 	function allto1($type) {
@@ -52,6 +53,7 @@ $genus_name = define_genus();
 					if (length > 3) {
 						res[i] = values[i].childNodes[1].firstChild.nodeValue;
 						input_name = values[i].getAttribute("name").concat('_w');
+						window.alert(input_name)
 					} break;
 				case 'qt_correction': 
 					if (length > 3) {
@@ -159,16 +161,18 @@ $genus_name = define_genus();
 						$explanations = $user_params[(string)$row["code_char"]]['explanations'];
 					}
 						echo '<tr>';
-						echo '	<td>'.$row[1]; if ($row[2] != NULL) echo '<SUP style="cursor:default;" title="'.$row["explanations"].'"></SUP></td>';
-						echo '	<td><input class="qt_explanation" type="text" name="'.$row["code_char"].'_w" value="'.$explanations.'"></td>'; 
-						echo '	<td><input class="qt_weight" type="text" name="'.$row["code_char"].'_w" value="'.$weight.'"></td>';
-						echo '	<td><input class="qt_correction" type="text" name="'.$row["code_char"].'_c" value="'.$correction.'"></td>';
+						echo '	<td>'.$row[1];
+						echo '	<td>'; if ($row[2] != NULL) echo $row[2]; echo'</td>';
 						echo '	<td><input type="text" name="'.$row[0].'_v"></td>';
+						echo '	<td><input class="qt_weight" type="text" name="'.$row["code_char"].'_w" value="'.$row[3].'"></td>';
+						echo '	<td><input class="qt_correction" type="text" name="'.$row["code_char"].'_c" value="'.$row[4].'"></td>';
 						echo '</tr>';
 					
 				}
 			?>
 				<tr>
+				<th></th>
+				<th></th>
 				<th></th>
 				<td>
 					<input type="button" value="Set all to 1" onclick="allto1('qt_weight')">
@@ -178,9 +182,9 @@ $genus_name = define_genus();
 				<td>
 					<input type="button" value="Defaults values" onclick="default_values('qt_correction')">
 				</td>
-				<td>
+				<!--<td>
 					<input type="button" value="Calculate range" onclick="default_values('qt_rangeValue')">
-				</td>
+				</td> -->
 			</tr>
 			<tr><th><h3><br />Qualitative characters</h3></th></tr>
 			
