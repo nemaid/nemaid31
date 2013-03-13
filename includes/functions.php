@@ -1,5 +1,6 @@
 <?php
 include ("header");
+//test
 // Chemin d'accès au dossier de l'application NEMAID 3.0
 define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31', true);
 
@@ -349,7 +350,7 @@ if(preg_match('/msie|(microsoft internet explorer)/i', $_SERVER['HTTP_USER_AGENT
   header('Pragma: no-cache');
 }
  
-echo $dom; // ou readfile('CHEMIN_FICHIER'); En fonction du type de fichier.
+echo '$dom'; // ou readfile('CHEMIN_FICHIER'); En fonction du type de fichier.
 }
 
 function curPageName() {
