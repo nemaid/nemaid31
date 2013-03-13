@@ -2,6 +2,7 @@
 include('includes/haut.php');
 connexion_bdd();
 $genus_name = define_genus();
+//test !
 ?>
 <script type="text/javascript">
 	function allto1($type) {
