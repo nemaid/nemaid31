@@ -5,9 +5,8 @@ include("connectionSQL.php");
 include("functions.php");
 include("includes/haut.php");
 
-$url = "http://www.google.fr";
+$url = "visuBDDDetails.php";
 $target = "_blank";
-$site_title="google";
 
 $result = mysql_query("SELECT define.code_spe, specie, authors, years, validity
 				FROM `species`
@@ -16,7 +15,6 @@ $result = mysql_query("SELECT define.code_spe, specie, authors, years, validity
 
 echo "<table border='1'>
 <tr>
-<th>Test</th>
 <th>Species</th>
 <th>Authors</th>
 <th>Validity</th>
@@ -25,9 +23,10 @@ echo "<table border='1'>
 
 while($row = mysql_fetch_array($result))
   {
+  	
+  	$nameSpecies = $row['specie'];
   echo "<tr>";
-  echo "<td>" ."<a href=$url target=$target>$site_title</a>" . "</td>";
-  echo "<td>" . $row['specie'] . "</td>";
+  echo "<td>" ."<a href=$url target=$target>$nameSpecies</a>" . "</td>";
   echo "<td>" . $row['authors'] . "</td>";
   if ($row['validity'] == 1){ 
   	echo "<td>" . "true"  . "</td>";
