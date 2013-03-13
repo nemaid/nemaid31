@@ -1,5 +1,5 @@
 <?php
-include('includes/haut.php');
+include('includes/functions.php');
 
 if(isset($_POST)) {
 	extract($_POST);
@@ -20,6 +20,11 @@ if(isset($_POST)) {
 		if(isset($_SESSION['nb_sample_saved'])) $_SESSION['nb_sample_saved']++;
 		else $_SESSION['nb_sample_saved'] = 1;		
 		save_user_sample($genus_name, $sample_id, $sample_date, $sample_loc, $sample_host, $remarks);
+		fopen("YourSample.xml", 'w+');
+	fputs($genus, $xml);
+	fclose($genus);
+	
+	echo 'Export XML effectue !<br><a href="carnetMysqlToXml.xml">Voir le fichier</a>';
 		
 		echo 'Your sample have been saved on server.'; // <br /><a href="'.ROOTPATH.'/download.php?s='.$_SESSION['nb_sample_saved'].'">Click here to download</a> it on your own computer.';
 	} elseif ($file_type == 'genus') {
