@@ -6,8 +6,10 @@ if(!file_exists("default_params.xml")) generate_xml_file('default');
 	echo '<script> warningMessTabHome(true); </script>';
 	
 }*/
+/* test affichage popup
+echo '<SCRIPT language="Javascript"> alert("test") </SCRIPT>';
+*/
 ?>
-
 <div>
 	<h2>Welcome to NEMAID 3.1 !</h2>
 	<p>NEMAID is an identification aid that calculates the similarity between the specimens to be identified and all of the species in a genus. It does not give one answer but a list of species that are most similar to the unknown specimens. It is then up to the user to study the published descriptions of the likely candidates and make the final identification.</p>

@@ -6,10 +6,6 @@
  * Window - Preferences - PHPeclipse - PHP - Code Templates
  */
  
- // On inclut les pages de connection à la BDD et des fonctions
-include("connectionSQL.php");
-include("functions.php");
- 
 
 echo "JE TE MANGE LE MULET";
  

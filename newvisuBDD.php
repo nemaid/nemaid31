@@ -7,6 +7,7 @@ include("includes/haut.php");
 
 $url = "visuBDDDetails.php";
 $target = "_blank";
+$site_title="google";
 
 $result = mysql_query("SELECT define.code_spe, specie, authors, years, validity
 				FROM `species`
