@@ -1,8 +1,9 @@
 <?php
 	include('includes/haut.php');
 	connexion_bdd();
+	// test
 	
-	// Récupération des données de l'utilisateur
+	// Rï¿½cupï¿½ration des donnï¿½es de l'utilisateur
 	$genus_name = define_genus();
 	
 	if(isset($_POST['user_sample'])) {
@@ -22,19 +23,30 @@
 	
 	$_SESSION['results'] = array();
 	
-	// Création de la condition d'inclusion des espèces invalides
+	// Crï¿½ation de la condition d'inclusion des espï¿½ces invalides
 	if(!isset($_POST['validity'])) { $validity_condition = 'AND validity <> "0"';
 	} else $validity_condition = '';
 	
-	// 
+	// Appel de l'algo de comparaison selon le type de description cochï¿½e par l'utilisateur
 	if(isset($_POST['choix'])) { $_SESSION['res_type'] = $_POST['choix'];
 		if ($_POST['choix'] == 'composite') {
-			compositeAlgo($genus_name, $validity_condition, $user_sample, $params);
+			if ($_POST['formulaVersion']=='30'){
+				compositeAlgo30($genus_name, $validity_condition, $user_sample, $params);
+			}
+			else {
+				compositeAlgo31($genus_name, $validity_condition, $user_sample, $params);
+			}
 		} elseif($_POST['choix'] == 'mixed') {
-			compositeAlgo($genus_name, $validity_condition, $user_sample, $params);
-			simpleAlgo($genus_name, true,$validity_condition, $user_sample, $params);
+			if ($_POST['formulaVersion']=='30'){
+				compositeAlgo30($genus_name, $validity_condition, $user_sample, $params);
+				simpleAlgo30($genus_name, true, $validity_condition, $user_sample, $params);
+			}
+			else {
+				compositeAlgo31($genus_name, $validity_condition, $user_sample, $params);
+				simpleAlgo31($genus_name, true, $validity_condition, $user_sample, $params);
+			}
 			
-			// Suppression des doublons (composite/originale) lorsqu'une seule description exsite pour l'espèce
+			// Suppression des doublons (composite/originale) lorsqu'une seule description existe pour l'espï¿½ce
 			$temp_tab = $_SESSION['results'];
 			foreach($_SESSION['results'] as $key1 => $data1) {
 				if(substr($key1,0,1) == '0') {
@@ -48,9 +60,19 @@
 			}
 		} else {
 			if($_POST['choix'] == 'originale') {
-				simpleAlgo($genus_name, true, $validity_condition, $user_sample, $params);
+				if ($_POST['formulaVersion']=='30'){
+					simpleAlgo30($genus_name, $validity_condition, $user_sample, $params);
+				}
+				else {
+					simpleAlgo31($genus_name, $validity_condition, $user_sample, $params);
+				}
 			} else {
-				simpleAlgo($genus_name, false, $validity_condition, $user_sample, $params);
+				if ($_POST['formulaVersion']=='30'){
+					simpleAlgo30($genus_name, $validity_condition, $user_sample, $params);
+				}
+				else {
+					simpleAlgo31($genus_name, $validity_condition, $user_sample, $params);
+				}
 			}
 		}
 	}
@@ -81,11 +103,11 @@
 		}
 	}
 	
-	// Trie des résultats par ordre décroissant des coefficients
+	// Trie des rï¿½sultats par ordre dï¿½croissant des coefficients
 	arsort($_SESSION['results']);
 	mysql_close();
 	
-	// Redirection vers page d'affichage des résultats
+	// Redirection vers page d'affichage des rï¿½sultats
 	header('Location: results.php');
 	
 	/* Debuggage - affiche le tableau des resultats en entier
@@ -95,27 +117,36 @@
 	*/
 
 /*
- * Fonction de calcul des coefficient de similarités pour les descriptions composites
+ * Fonction de calcul des coefficient de similaritï¿½s pour les descriptions composites
  * Parametres :
- * 	- $validity_condition : string contenant le code conditionnel à l'exclusion des espèces non-valides
- *	- $user_sample : contient les données de l'échantillon de l'utilisateur
- *	- $params : contient les paramètres choisis par l'utilisateur
+ * 	- $validity_condition : string contenant le code conditionnel ï¿½ l'exclusion des espï¿½ces non-valides
+ *	- $user_sample : contient les donnï¿½es de l'ï¿½chantillon de l'utilisateur
+ *	- $params : contient les paramï¿½tres choisis par l'utilisateur
  */
-function compositeAlgo($genus_name, $validity_condition, $user_sample, $params){
-	$use_char = false;	
-	$species = mysql_query('SELECT code_spe 
-							FROM species');
-		
+function compositeAlgo30($genus_name, $validity_condition, $user_sample, $params){
+	$use_char = false;
+	// Rï¿½cupï¿½ration de tous les codes espï¿½ces prï¿½sents dans la bdd	
+	$species = mysql_query('SELECT code_spe 	
+				FROM species');
+	// test affichge contenu $species -- marie 		
+	/*while($speTest = mysql_fetch_array($species)){
+		echo "while loop code spe:".$speTest[0].'</br>';
+	}*/
+	
+	$code_char = mysql_query('SELECT code_char 	
+				FROM characters');
+	
+	// Boucle qui va traiter tous les codes espï¿½ces un par un		
 	while($spe = mysql_fetch_array($species)){
 		$query = mysql_query('SELECT code_char, avg(value) AS moy, correction/correction AS quantitative, (max(value)-min(value))/2 as Vi, nb_states
-							FROM define, data, characters 
-							WHERE code_spe = "'.$spe[0].'" AND data.id_data = define.id_data AND data.id_char = characters.id_char 
-									AND name_genus = "'.$genus_name.'" '.$validity_condition.' 
-							GROUP BY code_char
-							ORDER BY code_spe ASC, quantitative DESC, code_char ASC');
-		
+				FROM define, data, characters 
+				WHERE code_spe = "'.$spe[0].'" AND data.id_data = define.id_data AND data.id_char = characters.id_char 
+				AND name_genus = "'.$genus_name.'" '.$validity_condition.' 
+				GROUP BY code_char
+				ORDER BY code_spe ASC, quantitative DESC, code_char ASC');
+		// Crï¿½ation indice selon code espï¿½ce
 		$index = 'C'.$spe[0];
-		
+		// Initialisation de variables	
 		$_SESSION['results'][$index]['coef'] = 0;
 		$_SESSION['results'][$index]['nb_char_used'] = 0;
 		$_SESSION['results'][$index]['nb_char_agree'] = 0;
@@ -123,8 +154,8 @@ function compositeAlgo($genus_name, $validity_condition, $user_sample, $params){
 		$temp = 0;
 		
 		while($row = mysql_fetch_assoc($query)){
-			$Mxi = (float)$user_sample[(string)$row['code_char']];
-			$Msi = $row['moy'];
+			$Mxi = (float)$user_sample[(string)$row['code_char']]; // valeur du caractï¿½re du sample (donc la valeur tappï¿½e par l'user)
+			$Msi = $row['moy']; // valeur du caractï¿½re dans l'espï¿½ce (soit moyenne des valeurs de la bdd)
 
 			if($row['quantitative'] != NULL) {				
 				$Ci = (float)$params[(string)$row['code_char']]['correction'];
@@ -142,7 +173,7 @@ function compositeAlgo($genus_name, $validity_condition, $user_sample, $params){
 				$_SESSION['results'][$index]['coef'] += $temp*$Wi;
 				$weight_sum += $Wi;
 				
-				// Sauvegarde des détails pour affichage
+				// Sauvegarde des dï¿½tails pour affichage
 				$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['sample'] = $Mxi;
 				$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['species'] = round($Msi,2);
 				$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['score'] = round($temp,2);
@@ -169,7 +200,7 @@ function compositeAlgo($genus_name, $validity_condition, $user_sample, $params){
 				$temp = 1 - (abs($Mxi-$Msi) - $row['Vi']);
 				if ($temp > 1) $temp = 1;
 				
-				// Sauvegarde des détails pour affichage
+				// Sauvegarde des dï¿½tails pour affichage
 				$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['sample'] = $Mxi;
 				$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['species'] = round($Msi,2);
 				$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['state_score'] = round($temp,2);
@@ -213,17 +244,17 @@ function compositeAlgo($genus_name, $validity_condition, $user_sample, $params){
 }
 
 /*
- * Fonction de calcul des coefficient de similarités pour les descriptions simples,
- * c'est à dire toutes les descriptions prises individuellement ou uniquement les descriptions originale
+ * Fonction de calcul des coefficient de similaritï¿½s pour les descriptions simples,
+ * c'est ï¿½ dire toutes les descriptions prises individuellement ou uniquement les descriptions originale
  * 
  * Parametres :
  *	- $only_original :  boolean - true: seule les descriptions originales seront prises en compte pour
  *						les calculs
- * 	- $validity_condition : string contenant le code conditionnel à l'exclusion des espèces non-valides
- *	- $user_sample : contient les données de l'échantillon de l'utilisateur
- *	- $params : contient les paramètres choisis par l'utilisateur
+ * 	- $validity_condition : string contenant le code conditionnel ï¿½ l'exclusion des espï¿½ces non-valides
+ *	- $user_sample : contient les donnï¿½es de l'ï¿½chantillon de l'utilisateur
+ *	- $params : contient les paramï¿½tres choisis par l'utilisateur
  */
-function simpleAlgo($genus_name, $only_original, $validity_condition, $user_sample, $params) {
+function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sample, $params) {
 	$use_char;
 	$counter = 0;
 	$previous = 'FIRST';
@@ -276,7 +307,7 @@ function simpleAlgo($genus_name, $only_original, $validity_condition, $user_samp
 			$_SESSION['results'][$index]['coef'] += $temp*$Wi;
 			$weight_sum += $Wi;
 			
-			// Sauvegarde des détails pour affichage
+			// Sauvegarde des dï¿½tails pour affichage
 			$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['sample'] = $Mxi;
 			$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['species'] = round($Msi,2);
 			$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['score'] = round($temp,2);
@@ -302,7 +333,258 @@ function simpleAlgo($genus_name, $only_original, $validity_condition, $user_samp
 			$temp = 1 - abs($Mxi-$Msi);
 			if ($temp > 1) $temp = 1;
 			
-			// Sauvegarde des détails pour affichage
+			// Sauvegarde des dï¿½tails pour affichage
+			$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['sample'] = $Mxi;
+			$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['species'] = round($Msi,2);
+			$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['state_score'] = round($temp,2);
+			$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['weight'] = $Wi;
+			
+			if (substr($row['code_char'], -1) == $row['nb_states'] || $row['nb_states'] == 1) {
+				/*
+				$use = 1;				
+				foreach($use_char as $u) {
+					if($u == 0) {
+						$use = 0;
+						break;
+					}
+				}
+				*/
+				//if($use == 0) $Wi = 0;
+				$weight_sum += $Wi;
+			
+				$temp = ($state_sum+$temp) / $row['nb_states'];
+				$_SESSION['results'][$index]['coef'] += $temp*$Wi;
+				
+				if($row['nb_states'] != 1) $_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['char_score'] = round($temp,2);
+				//else echo round($temp*$Wi,2).'<br/>';
+				$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['SW'] = round($temp*$Wi,2);
+				
+				if($Wi != 0) {
+					if($temp == 1) $_SESSION['results'][$index]['nb_char_agree']++;
+					$_SESSION['results'][$index]['nb_char_used']++;
+				}
+			} else {
+				$state_sum += $temp;
+			}
+		}
+		
+		if(mysql_affected_rows() == $counter) {
+			if ($weight_sum != 0) {
+				$taux = $_SESSION['results'][$previous]['coef'] / $weight_sum;
+				$_SESSION['results'][$previous]['coef'] = sprintf('%.2f',$taux);
+			} else $_SESSION['results'][$previous]['coef'] = 0;
+		}
+	}
+}
+/*
+ * Fonction de calcul des coefficient de similaritï¿½s pour les descriptions composites
+ * Parametres :
+ * 	- $validity_condition : string contenant le code conditionnel ï¿½ l'exclusion des espï¿½ces non-valides
+ *	- $user_sample : contient les donnï¿½es de l'ï¿½chantillon de l'utilisateur
+ *	- $params : contient les paramï¿½tres choisis par l'utilisateur
+ */
+function compositeAlgo31($genus_name, $validity_condition, $user_sample, $params){
+	$use_char = false;	
+	$species = mysql_query('SELECT code_spe 
+							FROM species');
+		
+	while($spe = mysql_fetch_array($species)){
+		$query = mysql_query('SELECT code_char, avg(value) AS moy, correction/correction AS quantitative, (max(value)-min(value))/2 as Vi, nb_states
+							FROM define, data, characters 
+							WHERE code_spe = "'.$spe[0].'" AND data.id_data = define.id_data AND data.id_char = characters.id_char 
+									AND name_genus = "'.$genus_name.'" '.$validity_condition.' 
+							GROUP BY code_char
+							ORDER BY code_spe ASC, quantitative DESC, code_char ASC');
+		
+		$index = 'C'.$spe[0];
+		
+		$_SESSION['results'][$index]['coef'] = 0;
+		$_SESSION['results'][$index]['nb_char_used'] = 0;
+		$_SESSION['results'][$index]['nb_char_agree'] = 0;
+		$weight_sum = 0;
+		$temp = 0;
+		
+		while($row = mysql_fetch_assoc($query)){
+			$Mxi = (float)$user_sample[(string)$row['code_char']];
+			$Msi = $row['moy'];
+
+			if($row['quantitative'] != NULL) {				
+				$Ci = (float)$params[(string)$row['code_char']]['correction'];
+				$Ri = (float)$params[(string)$row['code_char']]['range'];
+				
+				if($Mxi == "NULL") { $Wi = 0; $Mxi = 0;
+				} else $Wi = (float)$params[(string)$row['code_char']]['weight'];
+				
+				$temp = (abs($Mxi-$Msi) - $Ci) / ($Ri - $Ci);
+				
+				if ($temp <= 0) $temp = 1;
+				else $temp = 1 - $temp;
+				if ($temp < 0) $temp = 0;
+				
+				$_SESSION['results'][$index]['coef'] += $temp*$Wi;
+				$weight_sum += $Wi;
+				
+				// Sauvegarde des dï¿½tails pour affichage
+				$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['sample'] = $Mxi;
+				$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['species'] = round($Msi,2);
+				$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['score'] = round($temp,2);
+				$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['weight'] = $Wi;
+				$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['SW'] = round($temp*$Wi,2);
+				if($Wi != 0) {
+					if($temp == 1) $_SESSION['results'][$index]['nb_char_agree']++;
+					$_SESSION['results'][$index]['nb_char_used']++;
+				}
+			} else {
+				// Initialisation des variables temporaires
+				if (substr($row['code_char'], -1) == 1 || $row['nb_states'] == 1) {
+					//$use_char = array();
+					$Wi = (float)$params[(string)$row['code_char']]['weight'];
+					$state_sum = 0;
+				}
+				/*
+				if($Mxi != "NULL") $use_char[substr($row['code_char'], -1)] = 1;
+				else {
+					$use_char[substr($row['code_char'], -1)] = 0;
+					$Mxi = 0;
+				}
+				*/
+				$temp = 1 - (abs($Mxi-$Msi) - $row['Vi']);
+				if ($temp > 1) $temp = 1;
+				
+				// Sauvegarde des dï¿½tails pour affichage
+				$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['sample'] = $Mxi;
+				$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['species'] = round($Msi,2);
+				$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['state_score'] = round($temp,2);
+				$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['weight'] = $Wi;
+				
+				// Calcul du score final
+				if (substr($row['code_char'], -1) == $row['nb_states'] || $row['nb_states'] == 1) {
+					/*
+					$use = true;				
+					foreach($use_char as $u) {
+						if($u == 0) {
+							$use = false;
+							break;
+						}
+					}
+					*/
+					//if($use == 0) $Wi = 0;
+					$weight_sum += $Wi;
+					
+					$temp = ($state_sum+$temp) / $row['nb_states'];
+					$_SESSION['results'][$index]['coef'] += $temp*$Wi;
+					
+					if($row['nb_states'] != 1) $_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['char_score'] = round($temp,2);
+					
+					$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['SW'] = round($temp*$Wi,2);
+					if($Wi != 0) {
+						if($temp == 1) $_SESSION['results'][$index]['nb_char_agree']++;
+						$_SESSION['results'][$index]['nb_char_used']++;
+					}
+				} else {
+					$state_sum += $temp;
+				}
+			}
+		}
+		
+		if ($weight_sum != 0) {
+			$taux = $_SESSION['results'][$index]['coef'] / $weight_sum;
+			$_SESSION['results'][$index]['coef'] = sprintf('%.2f',round($taux,2));
+		} else $_SESSION['results'][$index]['coef'] = 0;
+	}
+}
+
+/*
+ * Fonction de calcul des coefficient de similaritï¿½s pour les descriptions simples,
+ * c'est ï¿½ dire toutes les descriptions prises individuellement ou uniquement les descriptions originale
+ * 
+ * Parametres :
+ *	- $only_original :  boolean - true: seule les descriptions originales seront prises en compte pour
+ *						les calculs
+ * 	- $validity_condition : string contenant le code conditionnel ï¿½ l'exclusion des espï¿½ces non-valides
+ *	- $user_sample : contient les donnï¿½es de l'ï¿½chantillon de l'utilisateur
+ *	- $params : contient les paramï¿½tres choisis par l'utilisateur
+ */
+function simpleAlgo31($genus_name, $only_original, $validity_condition, $user_sample, $params) {
+	$use_char;
+	$counter = 0;
+	$previous = 'FIRST';
+	
+	if ($only_original){
+		$original_condition = 'AND description = 0';
+	} else $original_condition = '';
+	
+	$query = mysql_query('SELECT id_def, validity, description, code_spe, value, code_char, correction/correction AS quantitative, nb_states 
+						  FROM define, data, characters 
+						  WHERE data.id_data = define.id_data AND data.id_char = characters.id_char AND name_genus = "'.$genus_name.'" 
+						  '.$original_condition.' '.$validity_condition.' 
+						  ORDER BY code_spe ASC, description ASC, quantitative DESC, code_char ASC');
+	
+	while($row = mysql_fetch_assoc($query)){
+		$index = $row['description'].$row['code_spe'];
+		$counter++;
+		if(!array_key_exists($index,$_SESSION['results'])) {
+			if ($previous != 'FIRST') {
+				if ($weight_sum != 0) {
+					$taux = $_SESSION['results'][$previous]['coef'] / $weight_sum;
+					$_SESSION['results'][$previous]['coef'] = sprintf('%.2f',$taux);
+				} else $_SESSION['results'][$previous]['coef'] = 0;
+			}
+			$previous = $index;
+			
+			$_SESSION['results'][$index]['coef'] = 0;
+			$_SESSION['results'][$index]['nb_char_used'] = 0;
+			$_SESSION['results'][$index]['nb_char_agree'] = 0;
+			$weight_sum = 0;
+			$temp = 0;
+		}
+		
+		$Mxi = (float)$user_sample[(string)$row['code_char']];
+		$Msi = (float)$row['value'];
+		
+		if($row['quantitative'] != NULL) {
+			$Ci = (float)$params[(string)$row['code_char']]['correction'];
+			$Ri = (float)$params[(string)$row['code_char']]['range'];
+			
+			if($Mxi == "NULL") { $Wi = 0; $Mxi = 0;
+			} else $Wi = (float)$params[(string)$row['code_char']]['weight'];
+			
+			$temp = (abs($Mxi-$Msi) - $Ci) / ($Ri - $Ci);
+
+			if ($temp <= 0) $temp = 1;
+			else $temp = 1 - $temp;
+			if ($temp < 0) $temp = 0;
+			
+			$_SESSION['results'][$index]['coef'] += $temp*$Wi;
+			$weight_sum += $Wi;
+			
+			// Sauvegarde des dï¿½tails pour affichage
+			$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['sample'] = $Mxi;
+			$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['species'] = round($Msi,2);
+			$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['score'] = round($temp,2);
+			$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['weight'] = $Wi;
+			$_SESSION['results'][$index]['details']['qt'][(string)$row['code_char']]['SW'] = round($temp*$Wi,2);
+			if($Wi != 0) {
+				if($temp == 1) $_SESSION['results'][$index]['nb_char_agree']++;
+				$_SESSION['results'][$index]['nb_char_used']++;
+			}
+		} else {
+			if (substr($row['code_char'], -1) == 1 || $row['nb_states'] == 1) {
+				$use_char = false;
+				$Wi = (float)$params[(string)$row['code_char']]['weight'];
+				$state_sum = 0;					
+			}
+			/*
+			if($Mxi != "NULL") $use_char[substr($row['code_char'], -1)] = 1;
+			else {
+				$use_char[substr($row['code_char'], -1)] = 0;
+				$Mxi = 0;
+			}
+			*/
+			$temp = 1 - abs($Mxi-$Msi);
+			if ($temp > 1) $temp = 1;
+			
+			// Sauvegarde des dï¿½tails pour affichage
 			$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['sample'] = $Mxi;
 			$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['species'] = round($Msi,2);
 			$_SESSION['results'][$index]['details']['ql'][(string)$row['code_char']]['state_score'] = round($temp,2);

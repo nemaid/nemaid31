@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sample>
-  <remarks>aaaaa</remarks>
-  <date>13</date>
+  <remarks></remarks>
+  <date></date>
   <char name="LON">NULL</char>
   <char name="STY">NULL</char>
   <char name="DGO">NULL</char>
@@ -16,11 +16,11 @@
   <char name="m">NULL</char>
   <char name="v">NULL</char>
   <char name="SPIC">NULL</char>
-  <char name="MALES">NULL</char>
+  <char name="MALES">de</char>
   <char name="DISC">NULL</char>
   <char name="CAN">NULL</char>
-  <char name="HAB_1">NULL</char>
-  <char name="HAB_2">NULL</char>
+  <char name="HAB_1">C</char>
+  <char name="HAB_2">shaped</char>
   <char name="LIP_1">NULL</char>
   <char name="LIP_2">NULL</char>
   <char name="INC_1">NULL</char>
