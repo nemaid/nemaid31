@@ -13,6 +13,8 @@ include("functions.php");
 
 $name = $_GET["specie"];
 
+
+//requete
 $result = mysql_query("select LON,
 	STY,
 	DGO,
