@@ -1,3 +1,4 @@
+
 <?php
 include('includes/functions.php');
 
@@ -12,17 +13,18 @@ if(isset($_POST)) {
 	 * Les fichiers sont unique pour un user et supprimés à la déconnexion
 	 */
 	if ($file_type == 'parameters') {
-		$dom=generate_xml_file($genus);
+		$dom = generate_xml_file($genus);
 		 dl_file($dom);
-		echo 'Your parameters have been saved on server.'; // <br /><a href="'.ROOTPATH.'/download.php?s=0">Click here to download</a> it on your own computer.';
+		echo 'Your parameters have been saved on server1.'; // <br /><a href="'.ROOTPATH.'/download.php?s=0">Click here to download</a> it on your own computer.';
 		
 	} elseif ($file_type == 'sample') {
 		$genus_name = define_genus();
 		if(isset($_SESSION['nb_sample_saved'])) $_SESSION['nb_sample_saved']++;
 		else $_SESSION['nb_sample_saved'] = 1;	
+		$dom = generate_xml_file($sample);
+		dl_file($dom);
 		
-		
-		echo 'Your sample have been saved on server.'; // <br /><a href="'.ROOTPATH.'/download.php?s='.$_SESSION['nb_sample_saved'].'">Click here to download</a> it on your own computer.';
+		echo 'Your sample have been saved on server2.'; // <br /><a href="'.ROOTPATH.'/download.php?s='.$_SESSION['nb_sample_saved'].'">Click here to download</a> it on your own computer.';
 	} elseif ($file_type == 'genus') {
 		if(isset($genus) && $genus != '') {
 			$_SESSION['genus_n'] = $genus;
@@ -34,3 +36,4 @@ if(isset($_POST)) {
 	}
 }
 ?>
+
