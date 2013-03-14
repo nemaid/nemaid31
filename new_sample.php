@@ -223,6 +223,7 @@ $genus_name = define_genus();
 		<br/><br/>
 		<input type="hidden" name="file_type" value="sample">
 		<input type="submit" value="Save sample">
+		<!--<a href="users_files/18-user20_sample.xml" class="pagination">Click here to download an example of the "CSV" file</a>-->
 	</form>
 	</ul>
 </div>

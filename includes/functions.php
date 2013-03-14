@@ -422,15 +422,8 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	if($sample_host != '') $name .= "_".$sample_host;
 	
 	$dom->save($name.".xml");
-	echo "mon $dom : " .$dom;
-	//$dom->save();
-	//dl_file($dom);
-	//downloadFile('http://genisys.prd.fr/nemaid31dev/',$name);
-	echo $name; //= users_files/8-user20_sample
 	return $dom;
 	mysql_close();
-	
-	//$dom2 = generate_xml_file($sample);
 	
 }
 
