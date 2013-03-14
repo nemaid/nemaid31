@@ -76,7 +76,7 @@ CopieFichier('http://genisys.prd.fr/nemaid31/users_files', 'xml/contacts.xml');*
      function dl_file($file){
  
         //First, see if the file exists
-        if (!is_file($file)) { die("<b>404 File not found!</b>"); }
+       	if (!is_file($file)) { die("<b>404 File not found!</b>"); }
  
         //Gather relevent info about file
         $len = filesize($file);
@@ -321,11 +321,11 @@ function generate_xml_file($gen) {
 		dl_file ("users_files/user".$_SESSION['user_id']."_params.xml") ;
 		return $dom;
 		//déclenche le téléchargement du fichier xml de paramètres
-		/*$url = ('users_files/user'.$_SESSION['user_id']."_params.xml");
-    header('Content-Description: xml download');
-    header('Content-Type: .xml');
-    header('Content-Disposition: attachment; filename="'. basename($url) .'";');
-    @readfile($url) OR die();*/
+		$url = ('users_files/user'.$_SESSION['user_id']."_params.xml");
+	    header('Content-Description: xml download');
+	    header('Content-Type: .xml');
+	    header('Content-Disposition: attachment; filename="'. basename($url) .'";');
+	    @readfile($url) OR die();
 	}
 	
 	mysql_close();
@@ -422,9 +422,28 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	if($sample_host != '') $name .= "_".$sample_host;
 	
 	$dom->save($name.".xml");
+	echo "mon $dom : " .$dom;
+	//$dom->save();
+	//dl_file($dom);
+	//downloadFile('http://genisys.prd.fr/nemaid31dev/',$name);
+	echo $name; //= users_files/8-user20_sample
 	return $dom;
 	mysql_close();
+	
+	//$dom2 = generate_xml_file($sample);
+	
 }
+
+function downloadFile ($url, $name) { //, $path
+	/*file_put_contents($name,
+	                  file_get_contents($url)
+	                 );
+	
+	simplexml_load_file($name);*/
+	//copy($url, $name);
+	$xml = file_get_contents($url.".$name.".".xml"); // your file is in the string "$xml" now.
+	file_put_contents("C:/Users/RanoNo/Downloads/yourxml.xml", $xml);
+ }
 
 function curPageName() {
 	return substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);

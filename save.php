@@ -1,7 +1,7 @@
 
 <?php
 include('includes/functions.php');
-
+//echo 'Toto ' .$file_type;
 if(isset($_POST)) {
 	extract($_POST);
 	
@@ -14,18 +14,23 @@ if(isset($_POST)) {
 	 */
 	if ($file_type == 'parameters') {
 		$dom = generate_xml_file($genus);
-		 dl_file($dom);
 		echo 'Your parameters have been saved on server1.'; // <br /><a href="'.ROOTPATH.'/download.php?s=0">Click here to download</a> it on your own computer.';
-		
-	} elseif ($file_type == 'sample') {
+		dl_file($dom);
+	} elseif ($file_type == 'new_sample') {
+		echo 'test';
 		$genus_name = define_genus();
+		
 		if(isset($_SESSION['nb_sample_saved'])) $_SESSION['nb_sample_saved']++;
 		else $_SESSION['nb_sample_saved'] = 1;	
-		$dom = generate_xml_file($sample);
-		dl_file($dom);
+		
+		save_user_sample($genus_name, $sample_id, $sample_date, $sample_loc, $sample_host, $remarks);
+				
 		
 		echo 'Your sample have been saved on server2.'; // <br /><a href="'.ROOTPATH.'/download.php?s='.$_SESSION['nb_sample_saved'].'">Click here to download</a> it on your own computer.';
+		$dom = generate_xml_file($sample);
+		dl_file($dom);
 	} elseif ($file_type == 'genus') {
+		echo 'test';
 		if(isset($genus) && $genus != '') {
 			$_SESSION['genus_n'] = $genus;
 		}
