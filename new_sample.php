@@ -2,7 +2,7 @@
 include('includes/haut.php');
 connexion_bdd();
 $genus_name = define_genus();
-//test !
+
 ?>
 <script type="text/javascript">
 	function allto1($type) {
@@ -53,7 +53,6 @@ $genus_name = define_genus();
 					if (length > 3) {
 						res[i] = values[i].childNodes[1].firstChild.nodeValue;
 						input_name = values[i].getAttribute("name").concat('_w');
-						window.alert(input_name)
 					} break;
 				case 'qt_correction': 
 					if (length > 3) {
@@ -74,7 +73,8 @@ $genus_name = define_genus();
 			
 			var inputs = document.getElementsByTagName('input');
 			for(var j=0; j<inputs.length; j++) {
-				if (inputs[j].name == input_name) { inputs[j].value = res[i]; }
+				if (inputs[j].name == input_name) { 
+				inputs[j].value = res[i]; }				
 			}
 		}
 	}
@@ -164,8 +164,8 @@ $genus_name = define_genus();
 						echo '	<td>'.$row[1];
 						echo '	<td>'; if ($row[2] != NULL) echo $row[2]; echo'</td>';
 						echo '	<td><input type="text" name="'.$row[0].'_v"></td>';
-						echo '	<td><input class="qt_weight" type="text" name="'.$row["code_char"].'_w" value="'.$row[3].'"></td>';
-						echo '	<td><input class="qt_correction" type="text" name="'.$row["code_char"].'_c" value="'.$row[4].'"></td>';
+						echo '	<td><input class="qt_weight" type="text" name="'.$row[0].'_w" value="'.$row[3].'"></td>';
+						echo '	<td><input class="qt_correction" type="text" name="'.$row[0].'_c" value="'.$row[4].'"></td>';
 						echo '</tr>';
 					
 				}
