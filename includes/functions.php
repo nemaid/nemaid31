@@ -478,4 +478,25 @@ function define_genus() {
 		default: return 'Helicotylenchus';
 	}
 }
+
+function get_value_by_key($array,$key)
+{
+ foreach($array as $k=>$each)
+ {
+  if($k==$key)
+  {
+   return $each;
+  }
+
+  if(is_array($each))
+  {
+   if($return = get_value_by_key($each,$key))
+   {
+    return $return;
+   }
+  }
+
+ }
+
+}
 ?>

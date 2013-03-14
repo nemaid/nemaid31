@@ -5,7 +5,15 @@ include("connectionSQL.php");
 include("functions.php");
 include("includes/haut.php");
 
-$target = "_blank";
+//on récupère l'id de connexion 
+//$id = session_id();
+//si l'id est égal à admin alors on permet l'accès au managment de la bdd
+//if (($id) == ("ciret.m@gmail.com")) {
+// création du bouton de redirection vers le mangement de la BDD
+?>
+<input type="button" name="DB Management" value="Return" onClick="javascript:document.location.href='BDDManagement.php'" />
+<?php
+//}
 
 $result = mysql_query("SELECT define.code_spe, specie, authors, years, validity
 				FROM `species`
@@ -39,7 +47,3 @@ while($row = mysql_fetch_array($result))
   }
 echo "</table>";
 ?>
-
-
-		
-		
