@@ -6,14 +6,14 @@ include("functions.php");
 include("includes/haut.php");
 
 //on récupère l'id de connexion 
-$id = session_id();
+//$id = session_id();
 //si l'id est égal à admin alors on permet l'accès au managment de la bdd
-if (($id) == ("admin")) {
+//if (($id) == ("ciret.m@gmail.com")) {
 // création du bouton de redirection vers le mangement de la BDD
-<input type="button" name="Management de la BDD" value="DB Management" onclick="self.location.href='BDDManagement.php'" 
-style="background-color:#3cb371" style="color:white; font-weight:bold"onclick> 
-
-$target = "_blank";}
+?>
+<input type="button" name="DB Management" value="Return" onClick="javascript:document.location.href='BDDManagement.php'" />
+<?php
+//}
 
 $result = mysql_query("SELECT define.code_spe, specie, authors, years, validity
 				FROM `species`
