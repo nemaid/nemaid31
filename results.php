@@ -1,4 +1,5 @@
 <?php
+echo "test dans result";
 include('includes/haut.php');
 ?>
 
@@ -151,35 +152,6 @@ include('includes/bas.php');
 				}
 			}
 		}
-		
-		echo '<tr>
-				<th>References</th>
-			</tr>
-			<tr>
-				<th>Author(s)</th>
-				<th>Publied in</th>
-				<th>Publication title</th>
-				<th>Journal</th>
-			</tr>';
-		$q3 = mysql_query("SELECT DISTINCT author, publi_in, title, journal 
-						   FROM define, `references`  
-						   WHERE define.id_ref = `references`.id_ref AND define.code_spe = '".$spe."' AND define.description = '".$desc."'");
-
-		while($row3 = mysql_fetch_assoc($q3)){
-			$authors = $row3['author'];
-			$publi_in = $row3['publi_in'];
-			$title = $row3['title'];
-			$journal = $row3['journal'];
-		}
-		echo '<tr>
-				<td>'.$authors.'</td>
-				<td class="center">'.$publi_in.'</td>
-				<td>'.$title.'</td>
-				<td>'.$journal.'</td>
-			</tr>';
-		
-		echo '</table></td>';
-		echo '</tr>';
 		mysql_close();
 	}}
 	?>
