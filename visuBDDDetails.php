@@ -178,7 +178,7 @@ echo "</tr>";
 mysql_free_result($result);
 echo "<tr>
 <th>Habitus 1</th>";
-$result = request("DGO", $name);
+$result = request("HAB1", $name);
 while($row = mysql_fetch_array($result))
 {
 	echo "<td>" . $row['HAB1'] . "</td>";
