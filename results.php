@@ -1,5 +1,5 @@
 <?php
-echo "test dans result";
+
 include('includes/haut.php');
 ?>
 
@@ -25,6 +25,13 @@ if(isset($_SESSION['results'])) {
 <?php
 include('includes/bas.php'); 
 ?>
+<?php/*
+	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {
+	echo "spe: ".$spe.'</br>';
+	echo "res: ".$res['coef'].'</br>';
+	}}
+	exit;*/
+?>
 
 <div id="results"><table>
 	<tr><th><h2>Results</h2></th></tr>			
@@ -37,7 +44,7 @@ include('includes/bas.php');
 		</tr>
 	<?php
 	$count = 0;
-	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {
+	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {	
 	connexion_bdd();
 		$species = '';
 		$genus_name = '';
@@ -59,6 +66,7 @@ include('includes/bas.php');
 		$q = mysql_query("SELECT specie, name_genus  
 						  FROM species 
 						  WHERE code_spe = '".$spe."'");
+		
 
 		while($row = mysql_fetch_assoc($q)){
 			$species = substr($row['name_genus'],0,1).". ".$row['specie'];
@@ -71,9 +79,10 @@ include('includes/bas.php');
 				echo '<td class="center">'.$res['nb_char_used'].'</td>';
 				echo '<td class="center">'.$res['nb_char_agree'].'</td>';
 			echo '</tr>';
+			
 			echo '<tr class="details">';
 				echo '<td colspan = "5"><table>';
-					
+	
 		if(isset($res['details']['qt'])) {
 			echo '<tr>
 				<th colspan="2">Quantitative characters</th>
@@ -153,6 +162,7 @@ include('includes/bas.php');
 			}
 		}
 		mysql_close();
+		echo '</table>';
 	}}
 	?>
 </table></div>

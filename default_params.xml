@@ -47,12 +47,12 @@
       <correction>8.00</correction>
       <range>24</range>
     </char>
-    <char name="c1">
+    <char name="c">
       <weight>0.10</weight>
       <correction>15.00</correction>
       <range>81</range>
     </char>
-    <char name="c2">
+    <char name="c_bis">
       <weight>0.60</weight>
       <correction>0.50</correction>
       <range>2</range>
@@ -81,25 +81,25 @@
     <char name="CAN">
       <weight>0.90</weight>
     </char>
-    <char name="HAB_1">
+    <char name="HAB1">
       <weight>0.90</weight>
     </char>
-    <char name="LIP_1">
+    <char name="LIP1">
       <weight>0.90</weight>
     </char>
-    <char name="INC_1">
+    <char name="INC1">
       <weight>0.80</weight>
     </char>
-    <char name="LANN_1">
+    <char name="LANN1">
       <weight>0.30</weight>
     </char>
-    <char name="KBS_1">
+    <char name="KBS1">
       <weight>0.10</weight>
     </char>
-    <char name="TSH_1">
+    <char name="TSH1">
       <weight>0.60</weight>
     </char>
-    <char name="GENB_1">
+    <char name="GENB1">
       <weight>1.00</weight>
     </char>
   </genus>
