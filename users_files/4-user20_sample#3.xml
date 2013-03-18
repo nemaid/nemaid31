@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<sample>
+  <remarks>type2012</remarks>
+  <date>160313</date>
+  <char name="LON">714</char>
+  <char name="STY">25.9</char>
+  <char name="DGO">9</char>
+  <char name="EXPO">110</char>
+  <char name="BAW">1.4</char>
+  <char name="TAIL">16.7</char>
+  <char name="TAN">9</char>
+  <char name="PHAS">27</char>
+  <char name="a">28</char>
+  <char name="c">46</char>
+  <char name="c_bis">1</char>
+  <char name="m">47</char>
+  <char name="v">62.5</char>
+  <char name="SPIC">0</char>
+  <char name="MALES">0</char>
+  <char name="DISC">0</char>
+  <char name="CAN">0</char>
+  <char name="HAB1">0</char>
+  <char name="HAB2">1</char>
+  <char name="LIP1">1</char>
+  <char name="LIP2">0</char>
+  <char name="INC1">0.29</char>
+  <char name="INC2">0.71</char>
+  <char name="LANN1">0</char>
+  <char name="LANN2">1</char>
+  <char name="LANN3">0</char>
+  <char name="KBS1">0</char>
+  <char name="KBS2">1</char>
+  <char name="KBS3">0</char>
+  <char name="TSH1">0</char>
+  <char name="TSH2">0</char>
+  <char name="TSH3">0</char>
+  <char name="TSH4">1</char>
+  <char name="GENB1">1</char>
+  <char name="GENB2">0</char>
+  <char name="GENB3">0</char>
+</sample>
