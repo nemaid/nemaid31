@@ -27,8 +27,8 @@ if(isset($_POST)) {
 				
 		
 		echo 'Your sample have been saved on server2.'; // <br /><a href="'.ROOTPATH.'/download.php?s='.$_SESSION['nb_sample_saved'].'">Click here to download</a> it on your own computer.';
-		$dom = generate_xml_file($sample);
-		dl_file($dom);
+		//$dom = generate_xml_file($sample);
+		//dl_file($dom);
 	} elseif ($file_type == 'genus') {
 		echo 'test';
 		if(isset($genus) && $genus != '') {

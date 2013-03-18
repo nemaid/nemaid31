@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<sample>
+  <remarks>abunaa_type_test</remarks>
+  <date>130316</date>
+  <char name="LON">624</char>
+  <char name="STY">21.2</char>
+  <char name="DGO">10</char>
+  <char name="EXPO">72</char>
+  <char name="BAW">0</char>
+  <char name="TAIL">0</char>
+  <char name="TAN">8</char>
+  <char name="PHAS">25</char>
+  <char name="a">28</char>
+  <char name="c">45</char>
+  <char name="c_bis">1.3</char>
+  <char name="m">0</char>
+  <char name="v">60.4</char>
+  <char name="SPIC">0</char>
+  <char name="MALES">0</char>
+  <char name="DISC">0</char>
+  <char name="CAN">0</char>
+  <char name="HAB1">0</char>
+  <char name="HAB2">1</char>
+  <char name="LIP1">1</char>
+  <char name="LIP2">0</char>
+  <char name="INC1">0</char>
+  <char name="INC2">0</char>
+  <char name="LANN1">0</char>
+  <char name="LANN2">1</char>
+  <char name="LANN3">0</char>
+  <char name="KBS1">0.5</char>
+  <char name="KBS2">0.5</char>
+  <char name="KBS3">0</char>
+  <char name="TSH1">0</char>
+  <char name="TSH2">0</char>
+  <char name="TSH3">0</char>
+  <char name="TSH4">1</char>
+  <char name="GENB1">1</char>
+  <char name="GENB2">0</char>
+  <char name="GENB3">0</char>
+</sample>

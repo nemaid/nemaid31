@@ -1,4 +1,5 @@
 <?php
+
 include('includes/haut.php');
 ?>
 
@@ -24,6 +25,13 @@ if(isset($_SESSION['results'])) {
 <?php
 include('includes/bas.php'); 
 ?>
+<?php/*
+	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {
+	echo "spe: ".$spe.'</br>';
+	echo "res: ".$res['coef'].'</br>';
+	}}
+	exit;*/
+?>
 
 <div id="results"><table>
 	<tr><th><h2>Results</h2></th></tr>			
@@ -36,7 +44,7 @@ include('includes/bas.php');
 		</tr>
 	<?php
 	$count = 0;
-	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {
+	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {	
 	connexion_bdd();
 		$species = '';
 		$genus_name = '';
@@ -58,6 +66,7 @@ include('includes/bas.php');
 		$q = mysql_query("SELECT specie, name_genus  
 						  FROM species 
 						  WHERE code_spe = '".$spe."'");
+		
 
 		while($row = mysql_fetch_assoc($q)){
 			$species = substr($row['name_genus'],0,1).". ".$row['specie'];
@@ -70,9 +79,10 @@ include('includes/bas.php');
 				echo '<td class="center">'.$res['nb_char_used'].'</td>';
 				echo '<td class="center">'.$res['nb_char_agree'].'</td>';
 			echo '</tr>';
+			
 			echo '<tr class="details">';
 				echo '<td colspan = "5"><table>';
-					
+	
 		if(isset($res['details']['qt'])) {
 			echo '<tr>
 				<th colspan="2">Quantitative characters</th>
@@ -151,36 +161,8 @@ include('includes/bas.php');
 				}
 			}
 		}
-		
-		echo '<tr>
-				<th>References</th>
-			</tr>
-			<tr>
-				<th>Author(s)</th>
-				<th>Publied in</th>
-				<th>Publication title</th>
-				<th>Journal</th>
-			</tr>';
-		$q3 = mysql_query("SELECT DISTINCT author, publi_in, title, journal 
-						   FROM define, `references`  
-						   WHERE define.id_ref = `references`.id_ref AND define.code_spe = '".$spe."' AND define.description = '".$desc."'");
-
-		while($row3 = mysql_fetch_assoc($q3)){
-			$authors = $row3['author'];
-			$publi_in = $row3['publi_in'];
-			$title = $row3['title'];
-			$journal = $row3['journal'];
-		}
-		echo '<tr>
-				<td>'.$authors.'</td>
-				<td class="center">'.$publi_in.'</td>
-				<td>'.$title.'</td>
-				<td>'.$journal.'</td>
-			</tr>';
-		
-		echo '</table></td>';
-		echo '</tr>';
 		mysql_close();
+		echo '</table>';
 	}}
 	?>
 </table></div>
