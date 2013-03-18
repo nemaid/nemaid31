@@ -149,7 +149,7 @@ function compositeAlgo30($genus_name, $validity_condition, $user_sample, $params
 	// Boucle qui va traiter toutes les espèces une par une	
 	while($spe = mysql_fetch_array($species)){
 		$characters = mysql_query('SELECT code_char 	
-				FROM characters');
+				FROM characters WHERE name_genus="'.$genus_name.'"');
 		// Boucle qui va traiter tous les caractères un par un (donc pour chaque espèce)
 		while ($code_char = mysql_fetch_array($characters)){
 			
@@ -315,37 +315,39 @@ function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sa
 		$original_condition = '';
 	}
 	
-	// Tableaus clé => valeur qui vont contenir les rapports correction/correction et le nombre d'état de chaque caractère
+	// Initialisation et remplissage des tableaux :
+	// - 1 dimension qui va contenir la liste des codes caractères du genre traité
+	$char_code_array = array();
+	// - 2 dimensions qui vont contenir les rapports correction/correction et le nombre d'état de chaque caractère
 	$char_corr_array = array();
 	$char_nb_state_array = array();
+	
 	$query_correction_nbStates = mysql_query('	SELECT 	code_char, 
 								correction/correction AS quantitative, 
 								nb_states
-							FROM characters');
+							FROM characters WHERE name_genus="'.$genus_name.'"');
 							
 	while ($corr_nbState = mysql_fetch_array($query_correction_nbStates)){
+		$char_codes_array[] = $corr_nbState['code_char'];
 		$char_corr_array[$corr_nbState['code_char']] = $corr_nbState['quantitative'];
 		$char_nbStates_array[$corr_nbState['code_char']] = $corr_nbState['nb_states'];
 	}
-	// Affichage des deux tableaux (correction et nbre d'états) pour vérif
+	
+	// Affichage des trois tableaux (codes des caractères, correction/correction et nbre d'états) pour vérif
+	foreach ($char_codes_array as $char_name){
+		echo "char name is ".$char_name.'</br>';
+	}
 	foreach ($char_corr_array as $char => $corr){
 		echo "char is ".$char." corr = ".$corr.'</br>';
 	}
 	foreach ($char_nbStates_array as $char => $nbStates){
 		echo "char is ".$char." nb states = ".$nbStates.'</br>';
 	}
-	
-	$test_str = "marie";
-	echo "strlen = ".strlen($test_str).'</br>';
-	
-	// récupération de tout les codes caractères
-	$characters = mysql_query('SELECT code_char 	
-				FROM characters');
-				
+					
 	$string_query_all_code_char='';	
 	// concaténation de tous les codes caractères (separes par des virgule) pour le SELECT de tous les caractères d'une description
-	while ($code_char = mysql_fetch_row($characters)){
-		$string_query_all_code_char=$string_query_all_code_char.$code_char[0].",";
+	foreach ($char_codes_array as $char_name){
+		$string_query_all_code_char=$string_query_all_code_char.$char_name.",";
 	}
 	echo $string_query_all_code_char.'</br>';
 	
@@ -360,10 +362,9 @@ function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sa
 					'.$original_condition.'
 					'.$validity_condition.'
 				ORDER BY code_spe ASC');
-	// récupération de tout les codes caractères
-	$characters = mysql_query('SELECT code_char 	
-				FROM characters');
-	while ($code_char = mysql_fetch_row($characters)){			
+
+	while ($code_char = mysql_fetch_row($characters)){
+			
 		while ($test = mysql_fetch_array($query)){
 			echo "genus name ".$genus_name.'</br>';
 			echo "validity cond ".$validity_condition.'</br>';
@@ -371,12 +372,12 @@ function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sa
 			echo "code spe ".$test['code_spe'].'</br>';
 		}
 	}
-	exit;	
+
 	while($row = mysql_fetch_assoc($query)){
-		echo "nb row returned by sql query = ".mysql_affected_rows().'</br>';
+		
 		$index = $row['pop_type'].$row['code_spe']; // Création indice selon le code espèce et le type de description de celle-ci (<=> "Tcode_spe" si population type) pour stockage des résultats dans le tableau $results 
 		$counter++;
-		echo "counter = ".$counter.'</br>';
+
 		if(!array_key_exists($index,$_SESSION['results'])) {
 			if ($previous != 'FIRST') {
 				if ($weight_sum != 0) {
