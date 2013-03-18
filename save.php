@@ -1,7 +1,6 @@
-
 <?php
-include('includes/functions.php');
-//echo 'Toto ' .$file_type;
+include('includes/haut.php');
+
 if(isset($_POST)) {
 	extract($_POST);
 	
@@ -13,24 +12,19 @@ if(isset($_POST)) {
 	 * Les fichiers sont unique pour un user et supprimés à la déconnexion
 	 */
 	if ($file_type == 'parameters') {
-		$dom = generate_xml_file($genus);
-		echo 'Your parameters have been saved on server1.'; // <br /><a href="'.ROOTPATH.'/download.php?s=0">Click here to download</a> it on your own computer.';
-		dl_file($dom);
-	} elseif ($file_type == 'new_sample') {
-		echo 'test';
+		generate_xml_file($genus);
+		echo 'Your parameters have been saved on server.'; // <br /><a href="'.ROOTPATH.'/download.php?s=0">Click here to download</a> it on your own computer.';
+		
+	} elseif ($file_type == 'sample') {
 		$genus_name = define_genus();
-		
 		if(isset($_SESSION['nb_sample_saved'])) $_SESSION['nb_sample_saved']++;
-		else $_SESSION['nb_sample_saved'] = 1;	
-		
+		else $_SESSION['nb_sample_saved'] = 1;		
 		save_user_sample($genus_name, $sample_id, $sample_date, $sample_loc, $sample_host, $remarks);
-				
 		
-		echo 'Your sample have been saved on server2.'; // <br /><a href="'.ROOTPATH.'/download.php?s='.$_SESSION['nb_sample_saved'].'">Click here to download</a> it on your own computer.';
-		//$dom = generate_xml_file($sample);
-		//dl_file($dom);
+		echo 'Your sample have been saved on server.'; // <br /><a href="'.ROOTPATH.'/download.php?s='.$_SESSION['nb_sample_saved'].'">Click here to download</a> it on your own computer.';
+
+		echo '<A href="../nemaid31dev/'.$_SESSION['current_name'].'.xml">Display </A> ';
 	} elseif ($file_type == 'genus') {
-		echo 'test';
 		if(isset($genus) && $genus != '') {
 			$_SESSION['genus_n'] = $genus;
 		}
@@ -41,4 +35,3 @@ if(isset($_POST)) {
 	}
 }
 ?>
-

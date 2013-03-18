@@ -209,9 +209,9 @@ $genus_name = define_genus();
 					} elseif (substr($row[0], -1) == 1) {
 						echo '<tr>';
 						echo '	<td>'.$row[1].'</td>';
-						echo '	<td><table><tr><td class="no_border"><input type="text" name="'.$row[0].'_v"></td><td class="no_border">'.$row[2].'</td></tr>';
+						echo '	<td><table><tr><td class="no_border"><input type="text" name="'.$row[0].'_v"></td><td class="no_border">'.$row[2].'</td></tr>'; 
 					} elseif (substr($row[0], -1) == $row[3]){
-						echo '	<tr><td class="no_border"><input type="text" name="'.$row[0].'_v"></td><td class="no_border">'.$row[2].'</td></tr></table>';
+						echo '	<tr><td class="no_border"><input type="text" name="'.$row[0].'_v"></td><td class="no_border">'.$row[2].'</table></td></tr>'; 
 						echo '</tr>';
 					} else {
 						echo '	<tr><td class="no_border"><input type="text" name="'.$row[0].'_v"></td><td class="no_border">'.$row[2].'</td></tr>';
