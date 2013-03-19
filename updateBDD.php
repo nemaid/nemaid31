@@ -10,52 +10,59 @@ include("includes/haut.php");
 
 
 $iddata = $_POST['iddata'];
+$result = mysql_query ("SELECT code_char from characters");
 
-
-for ($i=1; $i<37; $i++) { 
-$champ = "nbmenu".$i; 
-${'value'.$i} = $_POST[$champ]; 
+while($row = mysql_fetch_array($result)){
+	$champ = $row['code_char']; 
+	${$row['code_char']} = $_POST[$champ];
 }
 
 
-$result = mysql_query("UPDATE data set LON = $value1,
-STY = $value2,
-DGO = $value3, 
-EXPO = $value4, 
-BAW= $value5, 
-TAIL= $value6, 
-TAN= $value7, 
-PHAS= $value8, 
-a= $value9, 
-c= $value10, 
-c_bis= $value11, 
-m= $value12, 
-v= $value13, 
-SPIC= $value14, 
-MALES= $value15, 
-DISC= $value16, 
-CAN= $value17, 
-HAB1= $value18, 
-HAB2= $value19, 
-LIP1= $value20, 
-LIP2= $value21, 
-INC1= $value22, 
-INC2= $value23, 
-LANN1= $value24, 
-LANN2= $value25, 
-LANN3= $value26, 
-KBS1= $value27, 
-KBS2= $value28, 
-KBS3= $value29, 
-TSH1= $value30, 
-TSH2= $value31, 
-TSH3= $value32, 
-TSH4= $value33, 
-GENB1= $value34, 
-GENB2= $value35, 
-GENB3= $value36
+$update = ("UPDATE data set LON = '$LON',
+STY = '$STY',
+DGO = '$DGO', 
+EXPO = '$EXPO', 
+BAW= '$BAW', 
+TAIL= '$TAIL', 
+TAN= '$TAN', 
+PHAS= '$PHAS', 
+a= '$a', 
+c= '$c', 
+c_bis= '$c_bis', 
+m= '$m', 
+v= '$v', 
+SPIC= '$SPIC', 
+MALES= '$MALES', 
+DISC= '$DISC', 
+CAN= '$CAN', 
+HAB1= '$HAB1', 
+HAB2= '$HAB2', 
+LIP1= '$LIP1', 
+LIP2= '$LIP2', 
+INC1= '$INC1', 
+INC2= '$INC2', 
+LANN1= '$LANN1', 
+LANN2= '$LANN2', 
+LANN3= '$LANN3', 
+KBS1= '$KBS1', 
+KBS2= '$KBS2', 
+KBS3= '$KBS3', 
+TSH1= '$TSH1', 
+TSH2= '$TSH2', 
+TSH3= '$TSH3', 
+TSH4= '$TSH4', 
+GENB1= '$GENB1', 
+GENB2= '$GENB2', 
+GENB3= '$GENB3'
 WHERE id_data=$iddata");
 
-?>
+if (mysql_query($update)){
+		echo "<h3>Database updated successfully</h3>";
+	}
+	
+	else {
+		echo "Error updating record: " . mysql_error();
+	}
 
-<h3>Database updated successfully</h3>
+
+?>

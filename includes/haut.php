@@ -28,7 +28,7 @@ include('includes/functions.php');
 			<?php
 				if(!empty($_SESSION['user_id']))
 				{
-					if (curPageName()!='deconnexion.php' && curPageName()!='connexion.php' && curPageName()!='index.php')
+					if (curPageName()!='deconnexion.php' && curPageName()!='connexion.php' && curPageName()!='index.php' )
 					{
 			?>
 						<center>
@@ -75,7 +75,7 @@ include('includes/functions.php');
 			<?php
 					}
 				}
-				elseif (curPageName()!='index.php' && curPageName()!='connexion.php' && curPageName()!='inscription.php' && curPageName()!='account_creation.php')
+				elseif (curPageName()!='index.php' && curPageName()!='connexion.php' && curPageName()!='inscription.php' && curPageName()!='account_creation.php' && curPageName()!='resetPassword.php' && curPageName()!='newPassword.php')
 				{
 					$informations = Array(true,'You must be logged to access to this section.',ROOTPATH.'/index.php',2);
 					require_once('informations.php');
