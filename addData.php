@@ -7,7 +7,7 @@
  */
  
  
- $code_spe = $_POST['id_ref'];
+ $code_spe = $_POST['code_spe'];
 
-echo "id_ref " . $code_spe;
+echo "code spe " . $code_spe;
 ?>

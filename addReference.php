@@ -15,6 +15,11 @@ if(isset ($_POST['id_spe'])){
 
 else {
 	
+	$nameSpe = $_POST['specie'];
+	$nameGenus = $_POST['name_genus'];
+	mysql_query("INSERT INTO species (code_spe, specie, name_genus) VALUES ('', '$nameSpe', '$nameGenus')");
+	
+	$code_spe = mysql_insert_id();
 }
 
 
@@ -29,8 +34,10 @@ else {
 <h3> Add a new reference </h3> <br>
 
 <form action="addData.php" method="post">
-
-<table  border="no">
+<?php
+ echo "<input type = 'hidden' name ='code_spe' value = $code_spe>";
+ ?>
+<table>
 	<tr>
 		<td>Author(s) : </td>
 		<td><input required type="text" name="author" size = "100" ></td>
@@ -61,6 +68,9 @@ else {
 
 <h3> Select a reference </h3> <br>
 <form action="addData.php" method="post">
+<?php
+ echo "<input type = 'hidden' name ='code_spe' value = $code_spe>";
+ ?>
 <select id="id_ref"  onchange="document.getElementById('id_ref_content').value=this.options[this.selectedIndex].value">
 <option name = "default" value = ""> --Choose a reference--</option>
 
