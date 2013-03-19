@@ -412,7 +412,7 @@ function get_xml_data($what,$file = '') {
 			$res = $g['name'];
 			return $res;
 		}
-	} elseif($what == "user_params" || $what == "default_params") {
+	} elseif($what == "user_params" || $what == "default_params" || $what == "default_params_31") {
 		$params = array();
 	
 		$char = $xml->xpath('/parameters/genus/char');
