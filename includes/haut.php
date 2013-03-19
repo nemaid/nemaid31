@@ -43,7 +43,7 @@ include('includes/functions.php');
 										echo'<td class="menu"><a href="comparaison.php">Perform a comparison</a></td>';
 
 										if(isset($_SESSION['admin'])){
-											echo '<td class="menu"><a href="BDDManagement.php">Add a line in the Database </a></td>';
+											echo '<td class="menu"><a href="addSpecies.php">Add a line in the Database </a></td>';
 											echo '<td class="menu"><a href="visuBDD.php">Databases</a></td>';}
 										else
 											echo '<td class="menu"><a href="visuBDD.php">Databases</a></td>';
@@ -57,7 +57,7 @@ include('includes/functions.php');
 										echo'<td class="menu"><a href="comparaison.php">Perform a comparison</a></td>';
 
 										if(isset($_SESSION['admin'])){
-											echo '<td class="menu"><a href="BDDManagement.php">Add a line in the Database </a></td>';
+											echo '<td class="menu"><a href="addSpecies.php">Add a line in the Database </a></td>';
 											echo '<td class="menu"><a href="visuBDD.php">Databases</a></td>';}
 										else
 											echo '<td class="menu"><a href="visuBDD.php">Databases</a></td>';
