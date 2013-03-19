@@ -39,7 +39,14 @@ $id_ref = mysql_insert_id();
 echo "The reference has been added in the Database";	
 }
  
+<<<<<<< HEAD
+ 
+ $code_spe = $_POST['code_spe'];
+
+echo "code spe " . $code_spe;
+=======
 	echo $id_ref; echo "</br>";
 	echo  $code_spe;
 
+>>>>>>> 28352a0a48323c2662d84fa5f36b64451ad35624
 ?>

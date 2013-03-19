@@ -1,6 +1,7 @@
 ﻿<?php 
 include('includes/haut.php');
 if(!file_exists("default_params.xml")) generate_xml_file('default');
+if(!file_exists("default_params_31.xml")) generate_xml_file('default31');
 ?>
 <div>
 	<h2>Choose one of the available genera :</h2>

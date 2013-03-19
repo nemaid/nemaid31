@@ -43,9 +43,6 @@ while ($tableau_client = mysql_fetch_array($recuperation_species))
 }        
 
 
-//$insert_codeSpe = mysql_query("INSERT INTO species (code_spe, specie, name_genus)
-//VALUES ('', $namespe, $NameGenus')");
-
 
 ?>
         </select>
