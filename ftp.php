@@ -14,7 +14,7 @@ if(!(empty($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK && is_u
 	
 	// Création du nom du nouveau fichier sample
 	if(!substr_count($_FILES['file']['name'],$_SESSION['user_id']."_sample"))
-		$dest = '/nemaid31/users_files/'.$_SESSION['nb_sample_saved'].'-user'.$_SESSION['user_id'].'_sample#'.$_FILES['file']['name']; // Sa destination
+		$dest = '/nemaid31/users_files/'.$_SESSION['nb_sample_saved'].'-user'.$_SESSION['user_id'].'_sample$'.$_FILES['file']['name']; // Sa destination
 	else {
 		if(substr_count(substr($_FILES['file']['name'],2),'-')) $dest = '/nemaid31/users_files/'.$_SESSION['nb_sample_saved'].'-'.substr($_FILES['file']['name'],2);
 		else $dest = '/nemaid31/users_files/'.$_SESSION['nb_sample_saved'].'-'.$_FILES['file']['name'];

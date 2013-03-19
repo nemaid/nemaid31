@@ -455,20 +455,25 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	$date->appendChild($date_value);
 	
 	connexion_bdd();
-	$query = mysql_query('SELECT code_char 
+	$query = mysql_query('SELECT code_char
 						  FROM characters 
 						  WHERE name_genus = "'.$genus.'"');
 
 	while($row = mysql_fetch_row($query)){ // <char name="char_name">value</char>		
 		// Element <char></char>
 		$char = $dom->createElement('char');
+		$weight = $dom->createElement('weight');
 		$root->appendChild($char);
+		$root->appendChild($weight);
 		
 		// Attribute name
 		$char_name = $dom->createAttribute('name');
+		$weight_value = $dom->createAttribute('weight');
 		$char->appendChild($char_name);
+		$weight->appendChild($weight_value);
 		$char_name_value = $dom->createTextNode($row[0]);
-		$char_name->appendChild($char_name_value);
+		//$weight_name_value = $dom->createTextNode();document.forms["new_sample"].elements["qt_weightLON_w"]
+		//$weight_value->appendChild($weight_name_value);
 	
 		// TextNode value
 		if($_POST[$row[0].'_v'] != '')
@@ -478,7 +483,7 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	}
 	
 	$name = "users_files/".$_SESSION['nb_sample_saved']."-user".$_SESSION['user_id']."_sample";
-	if($sample_id != '') $name .= "#".$sample_id;
+	if($sample_id != '') $name .= "$".$sample_id;
 	if($sample_loc != '') $name .= "_".$sample_loc;
 	if($sample_host != '') $name .= "_".$sample_host;
 	
