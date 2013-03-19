@@ -92,16 +92,24 @@ $genus_name = define_genus();
 		return true;
 	}
 	
+	
+	
 	function get_weight() {
 		var inputs = document.getElementsByTagName('input');
-		var arr = {};
+		var ns_array = {};
 		
 		for(var i=0; i<inputs.length; i++) {
 			if(inputs[i].type == 'text' && inputs[i].name.indexOf("_w") !== -1) {
-				arr[inputs[i].name]=inputs[i].value;
+				ns_array[inputs[i].name]=inputs[i].value;
 			}
 		}
-		return arr;
+		$(window).data("array_weight", ns_array);
+		console.log(ns_array);
+		alert("ici");
+		//$.post('/includes/functions.php', ns_array);
+		//var styleattr=document.createAttribute("array_weight");
+		//styleattr.nodeValue=ns_array;
+		//return ns_array;
 	}
 	
 </script>

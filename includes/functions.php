@@ -465,6 +465,9 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 		$weight = $dom->createElement('weight');
 		$root->appendChild($char);
 		$root->appendChild($weight);
+		$array_int = $_POST;
+		print_r($array_int["LON_w"]);
+		
 		
 		// Attribute name
 		$char_name = $dom->createAttribute('name');
@@ -472,7 +475,7 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 		$char->appendChild($char_name);
 		$weight->appendChild($weight_value);
 		$char_name_value = $dom->createTextNode($row[0]);
-		//$weight_name_value = $dom->createTextNode();document.forms["new_sample"].elements["qt_weightLON_w"]
+		$weight_name_value = $dom->createTextNode($array_int["LON_w"]);//document.forms["new_sample"].elements["qt_weightLON_w"]
 		//$weight_value->appendChild($weight_name_value);
 	
 		// TextNode value
