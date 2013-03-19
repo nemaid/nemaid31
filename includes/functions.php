@@ -1,7 +1,7 @@
 <?php
 	session_start();
 // Chemin d'accès au dossier de l'application NEMAID 3.0
-define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31dev', true);
+define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31dev_marie', true);
 
 // Données relative a la FTP
 define('FTP_SERVER',   '46.218.144.14');
@@ -290,6 +290,57 @@ function generate_xml_content($gen, $dom, $root, $default) {
 	}
 }
 
+/*
+ * Génération du contenu du fichier xml
+ * c'est à dire les paramètres pour un genre (Helico ou Aphasma)
+ * pour la version 31 de l'algo (ie où les caracteres qualitatif ont des valeurs de corrections
+ */
+function generate_xml_content_31($gen, $dom, $root, $default) {
+	//Element <genus name='nom genus'>
+	$genus = $dom->createElement("genus");
+	$root->appendChild($genus);
+	$genus_name = $dom->createAttribute('name');
+	$genus->appendChild($genus_name);
+	$genus_name_value = $dom->createTextNode($gen);
+	$genus_name->appendChild($genus_name_value);
+		
+	$query = mysql_query('SELECT code_char, weight, correction, max, min
+						  FROM characters31
+						  WHERE name_genus = "'.$gen.'"');
+	while($row = mysql_fetch_row($query)){
+		// Element <char name='nom character'>
+		$char = $dom->createElement('char');
+		$genus->appendChild($char);
+		$char_name = $dom->createAttribute('name');
+		$char->appendChild($char_name);
+		$char_name_value = $dom->createTextNode($row[0]);
+		$char_name->appendChild($char_name_value);
+	
+		// Element <weight>valeur</weight>
+		$weight = $dom->createElement('weight');
+		$char->appendChild($weight);
+		if ($default) $weight_value = $dom->createTextNode($row[1]);
+		elseif ($row[0] == "c''") $weight_value = $dom->createTextNode($_POST["c''_w"]);
+		else $weight_value = $dom->createTextNode($_POST[$row[0]."_w"]);
+		$weight->appendChild($weight_value);
+		
+		// Element <correction>valeur</correction>
+		$correction = $dom->createElement('correction');
+		$char->appendChild($correction);
+		if ($default) $correction_value = $dom->createTextNode($row[2]);
+		else $correction_value = $dom->createTextNode($_POST[$row[0]."_c"]);
+		$correction->appendChild($correction_value);
+		
+		// Element <range>valeur</range>
+		$range = $dom->createElement('range');
+		$char->appendChild($range);
+		if ($default) $range_value = $dom->createTextNode($row[3]-$row[4]);
+		else $range_value = $dom->createTextNode($_POST[$row[0]."_r"]);
+		$range->appendChild($range_value);
+	
+	}
+}
+
 /* 
  * Creation d'un fichier xml contenant les paramètres de réglages
  * de l'application
@@ -315,6 +366,14 @@ function generate_xml_file($gen) {
 		}
 		$dom->save("default_params.xml");
 		dl_file ( $_GET("users_files/user.default_params.xml" ));
+		return $dom;
+	} elseif ($gen == 'default31') {
+		$query_genus = mysql_query('SELECT * FROM genera');
+		while($row_genus = mysql_fetch_row($query_genus)){
+			generate_xml_content_31($row_genus[0], $dom, $root, true);
+		}
+		$dom->save("default_params_31.xml");
+		dl_file ( $_GET("users_files/user.default_params_31.xml" ));
 		return $dom;
 	} else {
 		generate_xml_content($gen, $dom, $root, false);
@@ -342,6 +401,7 @@ function get_xml_data($what,$file = '') {
 	switch ($what) {
 		case 'user_params' : case 'genus': $xml = simplexml_load_file("users_files/user".$_SESSION['user_id']."_params.xml"); break;
 		case 'default_params' : $xml = simplexml_load_file("default_params.xml"); break;
+		case 'default_params_31' : $xml = simplexml_load_file("default_params_31.xml"); break;
 		case 'user_sample' : $xml = simplexml_load_file("users_files/".$file); break;
 		default: $xml = simplexml_load_file("default_params.xml"); break;
 	}
