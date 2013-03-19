@@ -20,33 +20,48 @@ if(isset ($_POST['id_ref'])){
 else {
 //on récupère toutes les données de la références créee prélalblement	
 $author = $_POST['author'];
-echo $author;
 $year = $_POST['year'];
-echo $year;
 $publi_in = $_POST['publi_in'];
-echo $publi_in;
 $title = $_POST['title'];
-echo $title;
 $journal = $_POST['journal'];
-echo $journal;
 
 //requete d'insertion dans la base de la ligne de référence
-
-mysql_query("INSERT INTO `references` (id_ref, author, year, publi_in, title, journal)
-VALUES ('', '$author', '$year', '$publi_in', '$title', '$journal')");
+mysql_query("INSERT INTO `references` (id_ref, author, year, publi_in, title, journal) VALUES ('', '$author', '$year', '$publi_in', '$title', '$journal')");
 
 $id_ref = mysql_insert_id();
-echo "The reference has been added in the Database";	
 }
  
-<<<<<<< HEAD
- 
+
  $code_spe = $_POST['code_spe'];
-
-echo "code spe " . $code_spe;
-=======
-	echo $id_ref; echo "</br>";
-	echo  $code_spe;
-
->>>>>>> 28352a0a48323c2662d84fa5f36b64451ad35624
+ 
+ $result = mysql_query ("SELECT code_char, name_char, explanations from characters");
+ 
 ?>
+
+<form action="addDefine.php" method="post">
+<?php
+echo "<input type = 'hidden' name = 'code_spe' value = $code_spe>";
+echo "<input type = 'hidden' name = 'id_ref' value = $id_ref>";
+
+echo "<table border = '1'>";
+while ($row = mysql_fetch_array($result))
+{
+	echo "<tr>";
+	echo "<th>" . $row['name_char'] . "</th>";
+	echo "<td>" . $row['explanations'] . "</td>";
+	echo "<td>" . "<input type = 'text' name = '" . $row['code_char'] . "'> </td>";
+	echo "</tr>";
+}
+
+echo "</table>";
+?>	
+<br>
+Data are valid : <input type="checkbox" defaultChecked name="validity" value="1" />
+<br>
+Description on a population type : <input type="checkbox" defaultChecked name="pop_type" value="T" />
+<br>
+<input type="submit"  name="submitAddData" action="addDefine.php" value="Submit"  />
+</form>
+
+
+

@@ -19,9 +19,7 @@ if(isset($_SESSION['user_id'])) {
 				<center><input type="submit" name="connection" value="Login" /></center>
 			</form>
 			<br />
-			If you forgot your password,<br />
-			please send a message to<br />
-			fortuner@wanadoo.fr
+			<center><a href="resetPassword.php">I forgot my password</a></center>
 			<br /><br />
 			<center><a href="inscription.php">Get an account</a></center>
 		</td>

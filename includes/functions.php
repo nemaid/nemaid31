@@ -1,40 +1,40 @@
 <?php
 	session_start();
-// Chemin d'accès au dossier de l'application NEMAID 3.0
-define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31dev_marie', true);
+// Chemin d'accï¿½s au dossier de l'application NEMAID 3.0
+define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31dev', true);
 
-// Données relative a la FTP
+// Donnï¿½es relative a la FTP
 define('FTP_SERVER',   '46.218.144.14');
 define('FTP_USERNAME', 'genisys9685');
 define('FTP_PASSWORD', '666732'); 
 
-// Données relative a la BDD
+// Donnï¿½es relative a la BDD
 define('BDD_NAME',   '46.218.144.14');   
 define('BDD_USERNAME', 'genisys9685');
 define('BDD_PASSWORD', '666732');
 
-// Délai de connexion, en secondes
+// Dï¿½lai de connexion, en secondes
 define('CONFIG_TIMEOUT',  2);     		 
 
 // Adresse mail de l'administrateur
 define('ADMIN_MAIL',  'li.redpanda@gmail.com');
 
 function sqlquery($requete, $number) {
-	$query = mysql_query($requete) or exit('Erreur SQL : '.mysql_error().' Ligne : '. __LINE__ .'.'); //requête
+	$query = mysql_query($requete) or exit('Erreur SQL : '.mysql_error().' Ligne : '. __LINE__ .'.'); //requï¿½te
 	
 	/*
 	Deux cas possibles ici :
-	Soit on sait qu'on a qu'une seule entrée qui sera
-	retournée par SQL, donc on met $number à 1
-	Soit on ne sait pas combien seront retournées,
-	on met alors $number à 2.
+	Soit on sait qu'on a qu'une seule entrï¿½e qui sera
+	retournï¿½e par SQL, donc on met $number ï¿½ 1
+	Soit on ne sait pas combien seront retournï¿½es,
+	on met alors $number ï¿½ 2.
 	*/
 	
 	if($number == 1)
 	{
 		$query1 = mysql_fetch_assoc($query);
 		mysql_free_result($query);
-		/*mysql_free_result($query) libère le contenu de $query, je
+		/*mysql_free_result($query) libï¿½re le contenu de $query, je
 		le fais par principe, mais c'est pas indispensable.*/
 		return $query1;
 	}
@@ -50,7 +50,7 @@ function sqlquery($requete, $number) {
 		mysql_free_result($query);
 		return $query2;
 	} else {
-		exit('Argument de sqlquery non renseigné ou incorrect.');
+		exit('Argument de sqlquery non renseignï¿½ ou incorrect.');
 	}
 }
 
@@ -66,14 +66,14 @@ function sqlquery($requete, $number) {
  
     $Fichier = fopen ($Destination, "w+" );
  
-    if ( !fwrite($Fichier, $ContenuFichier)) die('Impossible d\'écrire dans le fichier');
+    if ( !fwrite($Fichier, $ContenuFichier)) die('Impossible d\'ï¿½crire dans le fichier');
  
     fclose ($Fichier);
 }
  
 CopieFichier('http://genisys.prd.fr/nemaid31/users_files', 'xml/contacts.xml');*/
 
- //Fonction qui permet le téléchargement
+ //Fonction qui permet le tï¿½lï¿½chargement
      function dl_file($file){
  
         //First, see if the file exists
@@ -136,13 +136,13 @@ CopieFichier('http://genisys.prd.fr/nemaid31/users_files', 'xml/contacts.xml');*
     
 
 function connexion_bdd() {
-	//Définition des variables de connexion à la base de données
+	//Dï¿½finition des variables de connexion ï¿½ la base de donnï¿½es
 	$bd_host='46.218.144.13';
 	$bd_login='genis9685';
 	$bd_password='666732';
 	$bd_nom_bd='genis9685';
 
-	//Connexion à la base de données
+	//Connexion ï¿½ la base de donnï¿½es
 	mysql_connect($bd_host, $bd_login, $bd_password) or die (mysql_error());
 	mysql_select_db($bd_nom_bd) or die (mysql_error());
 	mysql_query("set names 'utf8'");
@@ -219,8 +219,8 @@ function information_mail($firstname, $lastname, $email, $institution, $town, $c
 }
 
 /*
- * Génération du contenu du fichier xml
- * c'est à dire les paramètres pour un genre (Helico ou Aphasma)
+ * Gï¿½nï¿½ration du contenu du fichier xml
+ * c'est ï¿½ dire les paramï¿½tres pour un genre (Helico ou Aphasma)
  */
 function generate_xml_content($gen, $dom, $root, $default) {
 	//Element <genus name='nom genus'>
@@ -291,9 +291,9 @@ function generate_xml_content($gen, $dom, $root, $default) {
 }
 
 /*
- * Génération du contenu du fichier xml
- * c'est à dire les paramètres pour un genre (Helico ou Aphasma)
- * pour la version 31 de l'algo (ie où les caracteres qualitatif ont des valeurs de corrections
+ * Gï¿½nï¿½ration du contenu du fichier xml
+ * c'est ï¿½ dire les paramï¿½tres pour un genre (Helico ou Aphasma)
+ * pour la version 31 de l'algo (ie oï¿½ les caracteres qualitatif ont des valeurs de corrections
  */
 function generate_xml_content_31($gen, $dom, $root, $default) {
 	//Element <genus name='nom genus'>
@@ -342,11 +342,11 @@ function generate_xml_content_31($gen, $dom, $root, $default) {
 }
 
 /* 
- * Creation d'un fichier xml contenant les paramètres de réglages
+ * Creation d'un fichier xml contenant les paramï¿½tres de rï¿½glages
  * de l'application
- * $gen = null pour générer le fichier des paramètres par défault
+ * $gen = null pour gï¿½nï¿½rer le fichier des paramï¿½tres par dï¿½fault
  * sinon $gen prend le nom d'un genre, le fichier xml contient
- * alors les parametres d'un utilisateur spécifique
+ * alors les parametres d'un utilisateur spï¿½cifique
  */
 function generate_xml_file($gen) {
 	// create doctype
@@ -380,7 +380,7 @@ function generate_xml_file($gen) {
 		$dom->save("users_files/user".$_SESSION['user_id']."_params.xml");
 		dl_file ("users_files/user".$_SESSION['user_id']."_params.xml") ;
 		return $dom;
-		//déclenche le téléchargement du fichier xml de paramètres
+		//dï¿½clenche le tï¿½lï¿½chargement du fichier xml de paramï¿½tres
 		$url = ('users_files/user'.$_SESSION['user_id']."_params.xml");
 	    header('Content-Description: xml download');
 	    header('Content-Type: .xml');
@@ -391,10 +391,10 @@ function generate_xml_file($gen) {
 	mysql_close();
 }
 
-/* Renvoit les données enregistrées par l'user
+/* Renvoit les donnï¿½es enregistrï¿½es par l'user
  * $what = genus, on renvoit le genre choisi
  * $what = params, on renvoit tous les parametres (weight, correction, range)
- * $what = sample, on envoit les données du sample enregistré
+ * $what = sample, on envoit les donnï¿½es du sample enregistrï¿½
  * $what = default, on recupere les params par default
  */
 function get_xml_data($what,$file = '') {
@@ -455,20 +455,28 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	$date->appendChild($date_value);
 	
 	connexion_bdd();
-	$query = mysql_query('SELECT code_char 
+	$query = mysql_query('SELECT code_char
 						  FROM characters 
 						  WHERE name_genus = "'.$genus.'"');
 
 	while($row = mysql_fetch_row($query)){ // <char name="char_name">value</char>		
 		// Element <char></char>
 		$char = $dom->createElement('char');
+		$weight = $dom->createElement('weight');
 		$root->appendChild($char);
+		$root->appendChild($weight);
+		$array_int = $_POST;
+		print_r($array_int["LON_w"]);
+		
 		
 		// Attribute name
 		$char_name = $dom->createAttribute('name');
+		$weight_value = $dom->createAttribute('weight');
 		$char->appendChild($char_name);
+		$weight->appendChild($weight_value);
 		$char_name_value = $dom->createTextNode($row[0]);
-		$char_name->appendChild($char_name_value);
+		$weight_name_value = $dom->createTextNode($array_int["LON_w"]);//document.forms["new_sample"].elements["qt_weightLON_w"]
+		//$weight_value->appendChild($weight_name_value);
 	
 		// TextNode value
 		if($_POST[$row[0].'_v'] != '')
@@ -478,7 +486,7 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	}
 	
 	$name = "users_files/".$_SESSION['nb_sample_saved']."-user".$_SESSION['user_id']."_sample";
-	if($sample_id != '') $name .= "#".$sample_id;
+	if($sample_id != '') $name .= "$".$sample_id;
 	if($sample_loc != '') $name .= "_".$sample_loc;
 	if($sample_host != '') $name .= "_".$sample_host;
 	

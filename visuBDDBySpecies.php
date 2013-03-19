@@ -32,13 +32,24 @@ while($row = mysql_fetch_array($result))
 	
 	$data = $row['id_data'];
 	$idref = $row['id_ref'];
+	$iddef = $row['id_def'];
 	$nameURL = "View data";
 	$url = "visuBDDDetails.php?iddata=";
 	$url .= $data;
 	$url .="&idref=".$idref;
 	echo "<td>" ."<a href=$url target=$target>$nameURL</a>" . "</td>";
+	if($_SESSION['admin'] == 1){
+		$data = $row['id_data'];
+		$idref = $row['id_ref'];
+		$nameURLToDel = "delete this definition";
+		$urlToDel = "deleteDefine.php?iddata=";
+		$urlToDel .= $data;
+		$urlToDel .="&iddef=".$iddef;
+		echo"<td>" . "<a href=$urlToDel target=$target>$nameURLToDel</a>" . "</td>";
+	}
 	echo "</tr>";
 }
+
 echo "</table>";
 
 
