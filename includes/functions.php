@@ -433,6 +433,14 @@ function get_xml_data($what,$file = '') {
 	}
 }
 
+function get_weight($value_w){
+	foreach ($_POST as $arr_int){
+		if ($_POST[$value_w.'_w'] != ''){
+			return $_POST[$value_w.'_w'];
+		}
+	}
+}
+
 function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample_host, $remarks) {
 	// create doctype
 	$dom = new DOMDocument("1.0");
@@ -458,31 +466,58 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	$query = mysql_query('SELECT code_char
 						  FROM characters 
 						  WHERE name_genus = "'.$genus.'"');
-
+		
 	while($row = mysql_fetch_row($query)){ // <char name="char_name">value</char>		
 		// Element <char></char>
 		$char = $dom->createElement('char');
-		$weight = $dom->createElement('weight');
 		$root->appendChild($char);
-		$root->appendChild($weight);
-		$array_int = $_POST;
-		print_r($array_int["LON_w"]);
+		
+		$value = $dom->createElement('value');
+		$char->appendChild($value);
+		
+		$weight = $dom->createElement('weight');
+		$char->appendChild($weight);
+		
+		$correction = $dom->createElement('correction');
+		$char->appendChild($correction);
 		
 		
 		// Attribute name
 		$char_name = $dom->createAttribute('name');
-		$weight_value = $dom->createAttribute('weight');
 		$char->appendChild($char_name);
-		$weight->appendChild($weight_value);
 		$char_name_value = $dom->createTextNode($row[0]);
-		$weight_name_value = $dom->createTextNode($array_int["LON_w"]);//document.forms["new_sample"].elements["qt_weightLON_w"]
-		//$weight_value->appendChild($weight_name_value);
-	
-		// TextNode value
+		$char_name->appendChild($char_name_value);
+		
+		
+		//value
+		$value_name = $dom->createAttribute('value');
+		$value->appendChild($value_name);
+		$value_name_value = $dom->createTextNode(($row[0]).'_v');
+		$value_name->appendChild($value_name_value);
+		
 		if($_POST[$row[0].'_v'] != '')
-			$value = $dom->createTextNode($_POST[$row[0].'_v']);
-		else $value = $dom->createTextNode("NULL");
-		$char->appendChild($value);
+			$value_v = $dom->createTextNode($_POST[$row[0].'_v']);
+		else $value_v = $dom->createTextNode("NULL");
+		$value->appendChild($value_v);
+		
+		//weight
+		$weight_value = $dom->createAttribute('weight');
+		$weight->appendChild($weight_value);
+		$weight_name_value = $dom->createTextNode(($row[0]).'_w');
+		$weight_value->appendChild($weight_name_value);
+		
+		$value_w = $dom->createTextNode(get_weight($row[0]));
+		$weight->appendChild($value_w);
+		
+		//correction
+		$correction_value = $dom->createAttribute('correction');
+		$correction->appendChild($correction_value);//	$weight
+		$correction_name_value = $dom->createTextNode(($row[0]).'_c');
+		$correction_value->appendChild($correction_name_value);
+		
+		$value_c = $dom->createTextNode($_POST[$row[0].'_c']);
+		$correction->appendChild($value_c);
+		
 	}
 	
 	$name = "users_files/".$_SESSION['nb_sample_saved']."-user".$_SESSION['user_id']."_sample";
@@ -498,16 +533,6 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	
 }
 
-function downloadFile ($url, $name) { //, $path
-	/*file_put_contents($name,
-	                  file_get_contents($url)
-	                 );
-	
-	simplexml_load_file($name);*/
-	//copy($url, $name);
-	$xml = file_get_contents($url.".$name.".".xml"); // your file is in the string "$xml" now.
-	file_put_contents("C:/Users/RanoNo/Downloads/yourxml.xml", $xml);
- }
 
 function curPageName() {
 	return substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
