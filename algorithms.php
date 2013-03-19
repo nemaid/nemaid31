@@ -20,6 +20,12 @@
 		$params = get_xml_data('default_params');
 	}
 	
+	if(file_exists("users_files/user".$_SESSION['user_id']."_params_31.xml") && get_xml_data('genus') == $genus_name) {
+		$params31 = get_xml_data('user_params');
+	} else {
+		$params31 = get_xml_data('default_params_31');
+	}
+
 	$_SESSION['results'] = array();
 	
 	// Création de la condition d'inclusion des espèces invalides
@@ -122,12 +128,6 @@
 	
 	// Redirection vers page d'affichage des résultats
 	header('Location: results.php');
-	
-	/* Debuggage - affiche le tableau des resultats en entier
-	echo '<pre>';
-	print_r($_SESSION['results']);
-	echo '</pre>';
-	*/
 
 /*
  * Fonction de calcul des coefficient de similarités pour les descriptions composites
@@ -149,6 +149,173 @@ function compositeAlgo30($genus_name, $validity_condition, $user_sample, $params
 	// Boucle qui va traiter toutes les espèces une par une	
 	while($spe = mysql_fetch_array($species)){
 		echo "algo spe :".$spe[0].'</br>';
+		$characters = mysql_query('SELECT code_char 	
+				FROM characters WHERE name_genus="'.$genus_name.'"');
+		// Boucle qui va traiter tous les caractères un par un (donc pour chaque espèce)
+		while ($code_char = mysql_fetch_array($characters)){
+			
+			$query = mysql_query('	SELECT 	avg('.$code_char[0].') AS moy, 
+							correction/correction AS quantitative, 
+							(max('.$code_char[0].')-min('.$code_char[0].'))/2 as Vi, 
+							nb_states				
+						FROM define, data, characters 
+						WHERE code_spe = "'.$spe[0].'" 
+							AND data.id_data = define.id_data 
+							AND characters.code_char = "'.$code_char[0].'"
+							AND name_genus = "'.$genus_name.'"
+							'.$validity_condition.'
+						ORDER BY code_spe ASC, quantitative DESC');
+			
+			// test affichage retour requete -- marie	
+			/*while ($test = mysql_fetch_array($query)){
+				echo "genus name ".$genus_name.'</br>';
+				echo "validity cond ".$validity_condition.'</br>';
+				echo "species ".$spe[0].'</br>';
+				echo "char ".$code_char[0].'</br>';
+				echo "while loop query moy ".$test[0].'</br>';
+				echo "while loop query quantitative ".$test[1].'</br>';
+				echo "while loop query Vi ".$test[2].'</br>';
+				echo "while loop query nb_states ".$test[3].'</br>';
+			}*/
+					
+			// Création indice selon le code espèce (<=> "Ccode_spe") pour stockage des résultats dans le tableau $results 
+			$index = 'C'.$spe[0];
+			
+			// Initialisation de variables	
+			$_SESSION['results'][$index]['coef'] = 0; // somme des Si*Wi ($temp*Wi calculé pour chaque caractère)
+			$_SESSION['results'][$index]['nb_char_used'] = 0;
+			$_SESSION['results'][$index]['nb_char_agree'] = 0;
+			$weight_sum = 0; // somme des Wi
+			$temp = 0; // coefficient de similarité calculé (avant multiplication par le poids (Wi))
+		
+			while($row = mysql_fetch_assoc($query)){
+				//echo "spe : ".$spe[0].'</br>';
+				//echo "char : ".$code_char[0].'</br>';	
+				$Mxi = (float)$user_sample[''.$code_char[0].'']; // récupération de la valeur du caractère rentrée par l'user (à partir du fichier xml généré suite à l'enregistrement des données entrées dans le formulaire)
+				//echo "Mxi ".$Mxi.'</br>';
+				$Msi = $row['moy']; // valeur connue du caractère dans l'espèce (<=> moyenne des valeurs présentes dans la bdd)
+				//echo "Msi ".$Msi.'</br>';
+			
+				if($row['quantitative'] != NULL) {				
+					$Ci = (float)$params[''.$code_char[0].'']['correction'];
+					$Ri = (float)$params[''.$code_char[0].'']['range'];				
+					//echo "Ci ".$Ci.'</br>';
+					//echo "Ri ".$Ri.'</br>';
+				
+					if($Mxi == "NULL") { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
+						$Wi = 0;
+						$Mxi = 0; 
+					} else {
+						$Wi = (float)$params[''.$code_char[0].'']['weight'];					
+					}
+					//echo "Wi ".$Wi.'</br>';
+				
+					$temp = (abs($Mxi-$Msi) - $Ci) / ($Ri - $Ci);
+				
+					if ($temp <= 0) { // if the character was missing, the value was setted to 0 and the similarity score calculated ($temp) is negative or equal to zero so the value is set to 1 to neutralize it
+						$temp = 1; 
+					} else {
+						$temp = 1 - $temp;
+					}
+					
+					if ($temp < 0) {
+						$temp = 0;
+					}
+				
+					$_SESSION['results'][$index]['coef'] += $temp*$Wi;
+					$weight_sum += $Wi;
+				
+					// Sauvegarde des détails pour affichage
+					$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['sample'] = $Mxi;
+					$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['species'] = round($Msi,2);
+					$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['score'] = round($temp,2);
+					$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['weight'] = $Wi;
+					$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['SW'] = round($temp*$Wi,2);
+					
+					if($Wi != 0) {
+						if($temp == 1) {
+							$_SESSION['results'][$index]['nb_char_agree']++;
+						}
+						$_SESSION['results'][$index]['nb_char_used']++;						
+					}
+					
+				} else { // else the character is qualitative					
+					if (substr($code_char[0], -1) == 1 || $row['nb_states'] == 1) { // Si on est en train de traiter le premier état du caractère ou si celui-ci est un caractère à un état (présence/absence) alors on récupére le Weight et on initilise le $state_sum 
+						//echo "substr ou nb_state ".substr($code_char[0], -1)." ou ".$row['nb_states'].'</br>';
+						$Wi = (float)$params[''.$code_char[0].'']['weight'];
+						$state_sum = 0;
+					}
+										
+					$temp = 1 - (abs($Mxi-$Msi) - $row['Vi']);
+					if ($temp > 1) {
+						$temp = 1;
+					}
+				
+					// Sauvegarde des détails pour affichage
+					$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['sample'] = $Mxi;
+					$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['species'] = round($Msi,2);
+					$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['state_score'] = round($temp,2);
+					$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['weight'] = $Wi;
+				
+					// Calcul du score final pour le caractère qualitatif							
+					if (substr(''.$code_char[0].'', -1) == $row['nb_states'] || $row['nb_states'] == 1) { // si on est rendu au dernier état du caractère ou si c'est un caractère à un seul état alors on calcul le coef de similarité final					
+						$weight_sum += $Wi;
+					
+						$temp = ($state_sum+$temp) / $row['nb_states'];
+						$_SESSION['results'][$index]['coef'] += $temp*$Wi;
+					
+						if($row['nb_states'] != 1) {
+							$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['char_score'] = round($temp,2);					
+						}
+						
+						$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['SW'] = round($temp*$Wi,2);
+						
+						if($Wi != 0) {
+							if($temp == 1) {
+								$_SESSION['results'][$index]['nb_char_agree']++;
+							}
+							$_SESSION['results'][$index]['nb_char_used']++;
+						}
+						
+					} else { // sinon on fait la somme du coef. de l'état en cours avec ceux des états précédents
+						$state_sum += $temp;
+					}
+				} // fin if quantitative else qualitative
+			} // fin while mysql_fetch_assoc de la requete des valeurs (moy, correction, nb_states etc...) pour un caractère
+		} // fin while mysql_fetch_array de la requete select code_char from characters
+		
+		// Calcul et stockage du score final de similarité
+		if ($weight_sum != 0) {
+			$taux = $_SESSION['results'][$index]['coef'] / $weight_sum;
+			$_SESSION['results'][$index]['coef'] = sprintf('%.2f',round($taux,2));
+		} else {
+			$_SESSION['results'][$index]['coef'] = 0;
+		}			
+		
+	} // fin while mysql_fetch_array de la requete select code_spe from species		
+} // fin compositeAlgo30
+
+/*
+ * Fonction de calcul des coefficient de similarités pour les descriptions composites en utilisant la formule 3.1
+ * c'est à dire sans différence de calcul entre le caractère quantitatif et qualitatif
+ * Les requetes utilisent la table characters31 identiques à characters avec ajout de valeurs dans les colonnes correction, min et max
+ * Parametres :
+ * 	- $validity_condition : string contenant le code conditionnel à l'exclusion des espèces non-valides
+ *	- $user_sample : contient les données de l'échantillon de l'utilisateur
+ *	- $params : contient les paramètres choisis par l'utilisateur
+ */
+function compositeAlgo31($genus_name, $validity_condition, $user_sample, $params){	
+	// Récupération de tous les codes espèces présents dans la bdd	
+	$species = mysql_query('SELECT code_spe 	
+				FROM species');
+				
+	// test affichge contenu $species -- marie 		
+	/*while($speTest = mysql_fetch_array($species)){
+		echo "while loop code spe:".$speTest[0].'</br>';
+	}*/
+	
+	// Boucle qui va traiter toutes les espèces une par une	
+	while($spe = mysql_fetch_array($species)){
 		$characters = mysql_query('SELECT code_char 	
 				FROM characters WHERE name_genus="'.$genus_name.'"');
 		// Boucle qui va traiter tous les caractères un par un (donc pour chaque espèce)
@@ -469,5 +636,5 @@ function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sa
 		}
 	
 	}// fin loop while mysql_fetch_array de la requete traitant toutes les descriptions de la bdd une par une	
-}
+}// fin simpleAlgo30
 ?>
