@@ -1,4 +1,5 @@
 <?php
+	session_start();
 // Chemin d'accès au dossier de l'application NEMAID 3.0
 define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31dev', true);
 
@@ -422,6 +423,8 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	if($sample_host != '') $name .= "_".$sample_host;
 	
 	$dom->save($name.".xml");
+
+	$_SESSION['current_name'] = $name;
 	return $dom;
 	mysql_close();
 	

@@ -12,13 +12,12 @@ include("includes/haut.php");
 
 $name = $_GET["specie"];
 
-$result = mysql_query("SELECT pop_type, define.id_ref, id_data, author, year, define.code_spe, specie FROM define, `references`, species WHERE specie='$name' AND species.code_spe = define.code_spe AND define.id_ref = `references`.id_ref");
+$result = mysql_query("SELECT define.id_ref, id_data, author, year, define.code_spe, specie FROM define, `references`, species WHERE specie='$name' AND species.code_spe = define.code_spe AND define.id_ref = `references`.id_ref ORDER BY year");
 
-echo "<h3> $name <h3>";
+echo "<h2> $name </h2>";
 
 echo "<table border='1'>
 <tr>
-<th>Population type</th>
 <th>Author(s)</th>
 <th>Year</th>
 <th>Link to data</th>
@@ -28,14 +27,15 @@ echo "<table border='1'>
 while($row = mysql_fetch_array($result))
 {
 	echo "<tr>";
-	echo "<td>" .$row['pop_type'] . "</td>";
 	echo "<td>" .$row['author'] . "</td>";
 	echo "<td>" .$row['year'] . "</td>";
 	
 	$data = $row['id_data'];
-	$nameURL = "view data";
+	$idref = $row['id_ref'];
+	$nameURL = "View data";
 	$url = "visuBDDDetails.php?iddata=";
 	$url .= $data;
+	$url .="&idref=".$idref;
 	echo "<td>" ."<a href=$url target=$target>$nameURL</a>" . "</td>";
 	echo "</tr>";
 }

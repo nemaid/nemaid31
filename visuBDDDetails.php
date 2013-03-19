@@ -17,7 +17,14 @@ function request($char, $idData){
 	return $result;
 }
 
+$idRef = $_GET["idref"];
+$result2 = mysql_query("SELECT title FROM `references` where id_ref=$idRef");
 
+$title = mysql_fetch_assoc($result2);
+$titre = $title['title'];
+
+
+	echo "<h2>Description based on the article : </h2>  </br> <h3>$titre </h3>";
 ?>
 
 <form action="updateBDD.php" method="post">
@@ -428,7 +435,12 @@ mysql_free_result($result);
 echo "</table>";
 
 
+if($_SESSION['admin'] == 1){
 ?>
 
 <button type = 'submit' name ='update' action="updateBDD.php" target="_blank">Update</button>
 </form>
+
+<?php
+}
+?>

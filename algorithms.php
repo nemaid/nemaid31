@@ -148,6 +148,7 @@ function compositeAlgo30($genus_name, $validity_condition, $user_sample, $params
 	
 	// Boucle qui va traiter toutes les espèces une par une	
 	while($spe = mysql_fetch_array($species)){
+		echo "algo spe :".$spe[0].'</br>';
 		$characters = mysql_query('SELECT code_char 	
 				FROM characters WHERE name_genus="'.$genus_name.'"');
 		// Boucle qui va traiter tous les caractères un par un (donc pour chaque espèce)
@@ -306,8 +307,6 @@ function compositeAlgo30($genus_name, $validity_condition, $user_sample, $params
  *	- $params : contient les paramètres choisis par l'utilisateur
  */
 function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sample, $params) {
-	$counter = 0;
-	$previous = 'FIRST';
 	
 	if ($only_original){
 		$original_condition = 'AND pop_type = "T"';
@@ -326,15 +325,14 @@ function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sa
 								correction/correction AS quantitative, 
 								nb_states
 							FROM characters WHERE name_genus="'.$genus_name.'"');
-							
+													
 	while ($corr_nbState = mysql_fetch_array($query_correction_nbStates)){
 		$char_codes_array[] = $corr_nbState['code_char'];
 		$char_corr_array[$corr_nbState['code_char']] = $corr_nbState['quantitative'];
 		$char_nbStates_array[$corr_nbState['code_char']] = $corr_nbState['nb_states'];
-	}
-	
+	}	
 	// Affichage des trois tableaux (codes des caractères, correction/correction et nbre d'états) pour vérif
-	foreach ($char_codes_array as $char_name){
+	/*foreach ($char_codes_array as $char_name){
 		echo "char name is ".$char_name.'</br>';
 	}
 	foreach ($char_corr_array as $char => $corr){
@@ -342,15 +340,15 @@ function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sa
 	}
 	foreach ($char_nbStates_array as $char => $nbStates){
 		echo "char is ".$char." nb states = ".$nbStates.'</br>';
-	}
+	}*/
 					
 	$string_query_all_code_char='';	
 	// concaténation de tous les codes caractères (separes par des virgule) pour le SELECT de tous les caractères d'une description
 	foreach ($char_codes_array as $char_name){
 		$string_query_all_code_char=$string_query_all_code_char.$char_name.",";
 	}
-	echo $string_query_all_code_char.'</br>';
-	
+	//echo $string_query_all_code_char.'</br>';
+
 	$query = mysql_query('	SELECT 	id_def, 
 					validity, 
 					pop_type,
@@ -361,136 +359,115 @@ function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sa
 					AND name_genus = "'.$genus_name.'"
 					'.$original_condition.'
 					'.$validity_condition.'
+				GROUP BY id_def
 				ORDER BY code_spe ASC');
 
-	while ($code_char = mysql_fetch_row($characters)){
-			
-		while ($test = mysql_fetch_array($query)){
-			echo "genus name ".$genus_name.'</br>';
-			echo "validity cond ".$validity_condition.'</br>';
-			echo "char ".$code_char[0]." value = ".$test[''.$code_char[0].''].'</br>';
-			echo "code spe ".$test['code_spe'].'</br>';
-		}
-	}
-
+	// pour chaque description présente dans la bdd
 	while($row = mysql_fetch_assoc($query)){
 		
-		$index = $row['pop_type'].$row['code_spe']; // Création indice selon le code espèce et le type de description de celle-ci (<=> "Tcode_spe" si population type) pour stockage des résultats dans le tableau $results 
-		$counter++;
-
-		if(!array_key_exists($index,$_SESSION['results'])) {
-			if ($previous != 'FIRST') {
-				if ($weight_sum != 0) {
-					$taux = $_SESSION['results'][$previous]['coef'] / $weight_sum;
-					$_SESSION['results'][$previous]['coef'] = sprintf('%.2f',$taux);
-				} else {
-					$_SESSION['results'][$previous]['coef'] = 0;
-				}
-			}
-		
-			$previous = $index;
+		$index = $row['pop_type'].'def'.$row['id_def'].'spe'.$row['code_spe']; // Création indice selon l'id_def et le code espèce pour stockage des résultats dans le tableau $results
 			
-			// Initialisation de variables	
-			$_SESSION['results'][$index]['coef'] = 0; // somme des Si*Wi ($temp*Wi calculé pour chaque caractère)
-			$_SESSION['results'][$index]['nb_char_used'] = 0;
-			$_SESSION['results'][$index]['nb_char_agree'] = 0;
-			$weight_sum = 0; // somme des Wi
-			$temp = 0; // coefficient de similarité calculé (avant multiplication par le poids (Wi))
-		}
+		// Initialisation de variables	
+		$_SESSION['results'][$index]['coef'] = 0; // somme des Si*Wi ($temp*Wi calculé pour chaque caractère)
+		$_SESSION['results'][$index]['nb_char_used'] = 0;
+		$_SESSION['results'][$index]['nb_char_agree'] = 0;
+		$weight_sum = 0; // somme des Wi
+		$temp = 0; // coefficient de similarité calculé (avant multiplication par le poids (Wi))
+		
+		// pour chaque caractère de la description traitee
+		foreach ($char_codes_array as $char_name){
+		
+			$Mxi = (float)$user_sample[''.$char_name.'']; // récupération de la valeur du caractère rentrée par l'user (à partir du fichier xml généré suite à l'enregistrement des données entrées dans le formulaire)
+			$Msi = (float)$row[''.$char_name.'']; // valeur connue du caractère dans l'espèce (<=> moyenne des valeurs présentes dans la bdd)
 	
-		$Mxi = (float)$user_sample[''.$code_char[0].'']; // récupération de la valeur du caractère rentrée par l'user (à partir du fichier xml généré suite à l'enregistrement des données entrées dans le formulaire)
-		$Msi = (float)$row[''.$code_char[0].'']; // valeur connue du caractère dans l'espèce (<=> moyenne des valeurs présentes dans la bdd)
-	
-		if($row['quantitative'] != NULL) { // if the character is quantitative
-			$Ci = (float)$params[''.$code_char[0].'']['correction'];
-			$Ri = (float)$params[''.$code_char[0].'']['range'];
+			if($char_corr_array[''.$char_name.''] != NULL) { // if the character is quantitative
+				$Ci = (float)$params[''.$char_name.'']['correction'];
+				$Ri = (float)$params[''.$char_name.'']['range'];
 		
-			if($Mxi == "NULL") { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
-				$Wi = 0;
-				$Mxi = 0;
-			} else {
-				$Wi = (float)$params[''.$code_char[0].'']['weight'];
-			}
-		
-			$temp = (abs($Mxi-$Msi) - $Ci) / ($Ri - $Ci);
-
-			if ($temp <= 0) { // if the character was missing, the value was setted to 0 and the similarity score calculated ($temp) is negative or equal to zero so the value is set to 1 to neutralize it
-				$temp = 1;
-			} else {
-				$temp = 1 - $temp;
-			}
-		
-			if ($temp < 0) {
-				$temp = 0;
-			}
-		
-			$_SESSION['results'][$index]['coef'] += $temp*$Wi;
-			$weight_sum += $Wi;
-		
-			// Sauvegarde des détails pour affichage
-			$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['sample'] = $Mxi;
-			$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['species'] = round($Msi,2);
-			$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['score'] = round($temp,2);
-			$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['weight'] = $Wi;
-			$_SESSION['results'][$index]['details']['qt'][''.$code_char[0].'']['SW'] = round($temp*$Wi,2);
-		
-			if($Wi != 0) {
-				if($temp == 1) {
-					$_SESSION['results'][$index]['nb_char_agree']++;
+				if($Mxi == "NULL") { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
+					$Wi = 0;
+					$Mxi = 0;
+				} else {
+					$Wi = (float)$params[''.$char_name.'']['weight'];
 				}
-				$_SESSION['results'][$index]['nb_char_used']++;
-			}
 		
-		} else { // else the character is qualitatif
-			if (substr(''.$code_char[0].'', -1) == 1 || $row['nb_states'] == 1) {
-				$Wi = (float)$params[''.$code_char[0].'']['weight'];
-				$state_sum = 0;					
-			}
+				$temp = (abs($Mxi-$Msi) - $Ci) / ($Ri - $Ci);
+
+				if ($temp <= 0) { // if the character was missing, the value was setted to 0 and the similarity score calculated ($temp) is negative or equal to zero so the value is set to 1 to neutralize it
+					$temp = 1;
+				} else {
+					$temp = 1 - $temp;
+				}
 		
-			$temp = 1 - abs($Mxi-$Msi);
-			if ($temp > 1) {
-				$temp = 1;
-			}
+				if ($temp < 0) {
+					$temp = 0;
+				}
 		
-			// Sauvegarde des détails pour affichage
-			$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['sample'] = $Mxi;
-			$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['species'] = round($Msi,2);
-			$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['state_score'] = round($temp,2);
-			$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['weight'] = $Wi;
-		
-			if (substr(''.$code_char[0].'', -1) == $row['nb_states'] || $row['nb_states'] == 1) {
+				$_SESSION['results'][$index]['coef'] += $temp*$Wi;
 				$weight_sum += $Wi;
 		
-				$temp = ($state_sum+$temp) / $row['nb_states'];
-				$_SESSION['results'][$index]['coef'] += $temp*$Wi;
-			
-				if($row['nb_states'] != 1) {
-					$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['char_score'] = round($temp,2);
-				}
-				$_SESSION['results'][$index]['details']['ql'][''.$code_char[0].'']['SW'] = round($temp*$Wi,2);
-			
+				// Sauvegarde des détails pour affichage
+				$_SESSION['results'][$index]['details']['qt'][''.$char_name.'']['sample'] = $Mxi;
+				$_SESSION['results'][$index]['details']['qt'][''.$char_name.'']['species'] = round($Msi,2);
+				$_SESSION['results'][$index]['details']['qt'][''.$char_name.'']['score'] = round($temp,2);
+				$_SESSION['results'][$index]['details']['qt'][''.$char_name.'']['weight'] = $Wi;
+				$_SESSION['results'][$index]['details']['qt'][''.$char_name.'']['SW'] = round($temp*$Wi,2);
+		
 				if($Wi != 0) {
 					if($temp == 1) {
 						$_SESSION['results'][$index]['nb_char_agree']++;
 					}
 					$_SESSION['results'][$index]['nb_char_used']++;
 				}
+		
+			} else { // else the character is qualitatif
+				if (substr(''.$char_name.'', -1) == 1 || $char_nbStates_array[''.$char_name.''] == 1) {
+					$Wi = (float)$params[''.$char_name.'']['weight'];
+					$state_sum = 0;					
+				}
+		
+				$temp = 1 - abs($Mxi-$Msi);
+				if ($temp > 1) {
+					$temp = 1;
+				}
+		
+				// Sauvegarde des détails pour affichage
+				$_SESSION['results'][$index]['details']['ql'][''.$char_name.'']['sample'] = $Mxi;
+				$_SESSION['results'][$index]['details']['ql'][''.$char_name.'']['species'] = round($Msi,2);
+				$_SESSION['results'][$index]['details']['ql'][''.$char_name.'']['state_score'] = round($temp,2);
+				$_SESSION['results'][$index]['details']['ql'][''.$char_name.'']['weight'] = $Wi;
+		
+				if (substr(''.$char_name.'', -1) == $char_nbStates_array[''.$char_name.''] || $char_nbStates_array[''.$char_name.''] == 1) {
+					$weight_sum += $Wi;
+		
+					$temp = ($state_sum+$temp) / $char_nbStates_array[''.$char_name.''];
+					$_SESSION['results'][$index]['coef'] += $temp*$Wi;
 			
-			} else {
-			$state_sum += $temp;
-			}
-		} // fin if quantitatif else qualitatif
-
-		// Calcul et stockage du score final de similarité
-		if(mysql_affected_rows() == $counter) {
-			echo "TEST if".'</br>';
-			if ($weight_sum != 0) {
-				$taux = $_SESSION['results'][$previous]['coef'] / $weight_sum;
-				$_SESSION['results'][$previous]['coef'] = sprintf('%.2f',$taux);
-			} else {
-				$_SESSION['results'][$previous]['coef'] = 0;
-			}
+					if($row['nb_states'] != 1) {
+						$_SESSION['results'][$index]['details']['ql'][''.$char_name.'']['char_score'] = round($temp,2);
+					}
+					$_SESSION['results'][$index]['details']['ql'][''.$char_name.'']['SW'] = round($temp*$Wi,2);
+			
+					if($Wi != 0) {
+						if($temp == 1) {
+							$_SESSION['results'][$index]['nb_char_agree']++;
+						}
+						$_SESSION['results'][$index]['nb_char_used']++;
+					}			
+				} else {
+					$state_sum += $temp;
+				}
+			} // fin if quantitatif else qualitatif
+		} // fin foreach caractère
+			
+		// Calcul et stockage du score final de similarité	
+		if ($weight_sum != 0) {
+			$taux = $_SESSION['results'][$index]['coef'] / $weight_sum;
+			$_SESSION['results'][$index]['coef'] = sprintf('%.2f',$taux);
+		} else {
+			$_SESSION['results'][$index]['coef'] = 0;
 		}
-	}	
+	
+	}// fin loop while mysql_fetch_array de la requete traitant toutes les descriptions de la bdd une par une	
 }
 ?>
