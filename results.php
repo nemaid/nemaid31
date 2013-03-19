@@ -44,7 +44,8 @@ include('includes/bas.php');
 		</tr>
 	<?php
 	$count = 0;
-	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {	
+	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {
+	echo "spe :".$spe.'</br>';
 	connexion_bdd();
 		$species = '';
 		$genus_name = '';
@@ -53,7 +54,7 @@ include('includes/bas.php');
 		// Recuperation du numero de la description si necessaire
 		if($_SESSION['res_type'] == "all" || $_SESSION['res_type'] == "mixed") {
 			$desc = substr($spe,0,1);
-			
+			echo "desc :".$desc.'</br>';
 			switch($desc) {
 				case '0': $descText = 'Original'; break;
 				case 'C': $descText = 'Composite'; break;
