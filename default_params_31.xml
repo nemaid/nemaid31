@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<parameters>
+  <genus name="Aphasmatylenchus"/>
+  <genus name="Helicotylenchus">
+    <char name="LON">
+      <weight>0.70</weight>
+      <correction>150.00</correction>
+      <range>835</range>
+    </char>
+    <char name="STY">
+      <weight>1.00</weight>
+      <correction>3.00</correction>
+      <range>27</range>
+    </char>
+    <char name="DGO">
+      <weight>0.30</weight>
+      <correction>5.00</correction>
+      <range>19</range>
+    </char>
+    <char name="EXPO">
+      <weight>0.60</weight>
+      <correction>10.00</correction>
+      <range>120</range>
+    </char>
+    <char name="BAW">
+      <weight>0.10</weight>
+      <correction>1.00</correction>
+      <range>2.4</range>
+    </char>
+    <char name="TAIL">
+      <weight>0.30</weight>
+      <correction>3.00</correction>
+      <range>30</range>
+    </char>
+    <char name="TAN">
+      <weight>0.50</weight>
+      <correction>13.00</correction>
+      <range>21</range>
+    </char>
+    <char name="PHAS">
+      <weight>0.70</weight>
+      <correction>6.00</correction>
+      <range>37</range>
+    </char>
+    <char name="a">
+      <weight>0.30</weight>
+      <correction>8.00</correction>
+      <range>24</range>
+    </char>
+    <char name="c">
+      <weight>0.10</weight>
+      <correction>15.00</correction>
+      <range>81</range>
+    </char>
+    <char name="c_bis">
+      <weight>0.60</weight>
+      <correction>0.50</correction>
+      <range>2</range>
+    </char>
+    <char name="m">
+      <weight>0.80</weight>
+      <correction>4.00</correction>
+      <range>19</range>
+    </char>
+    <char name="v">
+      <weight>1.00</weight>
+      <correction>2.00</correction>
+      <range>39.9</range>
+    </char>
+    <char name="SPIC">
+      <weight>0.70</weight>
+      <correction>3.00</correction>
+      <range>20</range>
+    </char>
+    <char name="MALES">
+      <weight>0.90</weight>
+      <correction>0.05</correction>
+      <range>1</range>
+    </char>
+    <char name="DISC">
+      <weight>0.80</weight>
+      <correction>0.10</correction>
+      <range>1</range>
+    </char>
+    <char name="CAN">
+      <weight>0.90</weight>
+      <correction>0.20</correction>
+      <range>1</range>
+    </char>
+    <char name="HAB1">
+      <weight>0.90</weight>
+      <correction>0.20</correction>
+      <range>1</range>
+    </char>
+    <char name="HAB2">
+      <weight>0.90</weight>
+      <correction>0.20</correction>
+      <range>1</range>
+    </char>
+    <char name="LIP1">
+      <weight>0.90</weight>
+      <correction>0.10</correction>
+      <range>1</range>
+    </char>
+    <char name="LIP2">
+      <weight>0.90</weight>
+      <correction>0.10</correction>
+      <range>1</range>
+    </char>
+    <char name="INC1">
+      <weight>0.80</weight>
+      <correction>0.10</correction>
+      <range>1</range>
+    </char>
+    <char name="INC2">
+      <weight>0.80</weight>
+      <correction>0.10</correction>
+      <range>1</range>
+    </char>
+    <char name="LANN1">
+      <weight>0.30</weight>
+      <correction>0.20</correction>
+      <range>1</range>
+    </char>
+    <char name="LANN2">
+      <weight>0.30</weight>
+      <correction>0.20</correction>
+      <range>1</range>
+    </char>
+    <char name="LANN3">
+      <weight>0.30</weight>
+      <correction>0.20</correction>
+      <range>1</range>
+    </char>
+    <char name="KBS1">
+      <weight>0.10</weight>
+      <correction>0.20</correction>
+      <range>1</range>
+    </char>
+    <char name="KBS2">
+      <weight>0.10</weight>
+      <correction>0.20</correction>
+      <range>1</range>
+    </char>
+    <char name="KBS3">
+      <weight>0.10</weight>
+      <correction>0.20</correction>
+      <range>1</range>
+    </char>
+    <char name="TSH1">
+      <weight>0.60</weight>
+      <correction>0.25</correction>
+      <range>1</range>
+    </char>
+    <char name="TSH2">
+      <weight>0.60</weight>
+      <correction>0.25</correction>
+      <range>1</range>
+    </char>
+    <char name="TSH3">
+      <weight>0.60</weight>
+      <correction>0.25</correction>
+      <range>1</range>
+    </char>
+    <char name="TSH4">
+      <weight>0.60</weight>
+      <correction>0.25</correction>
+      <range>1</range>
+    </char>
+    <char name="GENB1">
+      <weight>1.00</weight>
+      <correction>0.00</correction>
+      <range>1</range>
+    </char>
+    <char name="GENB2">
+      <weight>1.00</weight>
+      <correction>0.00</correction>
+      <range>1</range>
+    </char>
+    <char name="GENB3">
+      <weight>1.00</weight>
+      <correction>0.00</correction>
+      <range>1</range>
+    </char>
+  </genus>
+</parameters>
