@@ -56,7 +56,7 @@ while ($tableau_client = mysql_fetch_array($recuperation_species))
 
 <?php 
 echo "<h3> Select an existing species </h3>";      
-$recuperation_species = mysql_query("SELECT code_spe, specie from species");
+$recuperation_species = mysql_query("SELECT code_spe, specie from species ORDER BY specie COLLATE latin1_german2_ci");
 
 ?>
         
