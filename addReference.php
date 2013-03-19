@@ -76,7 +76,7 @@ else {
 
 <?php
 
-$reference =mysql_query("SELECT id_ref, title from `references`");
+$reference =mysql_query("SELECT id_ref, title from `references` ORDER BY title COLLATE latin1_german2_ci");
 while ($result = mysql_fetch_array($reference))
 {	
 	$title = $result['title'];
