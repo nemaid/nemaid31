@@ -24,7 +24,7 @@ if(isset($_POST)) {
 		
 		echo 'Your sample have been saved on server. '; // <br /><a href="'.ROOTPATH.'/download.php?s='.$_SESSION['nb_sample_saved'].'">Click here to download</a> it on your own computer.';
 
-		echo '<A href="../nemaid31dev/'.$_SESSION['current_name'].'.xml" target="_blank">Display it</A> ';
+		echo '<A href="../nemaid31/'.$_SESSION['current_name'].'.xml" target="_blank">Display it</A> ';
 		echo '<br><br>';
 		echo 'To save xml file on your own computer, click on "<u>Display it</u>" button. After displaying the file, right click anywhere on the page and save the file.';
 		echo '<br><br>';
