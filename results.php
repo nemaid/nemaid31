@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include('includes/haut.php');
 ?>
 
@@ -32,8 +32,30 @@ include('includes/bas.php');
 	}}
 	exit;*/
 ?>
-
 <div id="results"><table>
+	<?php 
+		
+		echo "result : res type".$_SESSION['res_type'].'</br>';
+		echo "result : algo vers".$_SESSION['algoVersion'].'</br>';
+		if($_SESSION['res_type'] == "composite") {
+			echo "You have chosen the algorithms using the Composites descriptions with the ".$_SESSION['algoVersion']." version. ";
+			}
+		elseif ($_SESSION['res_type'] == "mixed") {
+			echo "You have chosen the algorithms using the Composites and the Original descriptions with the ".$_SESSION['algoVersion']." version. ";
+		}
+		elseif ($_SESSION['res_type'] == "originale") {
+			echo "You have chosen the algorithms using the Original descriptions only with the ".$_SESSION['algoVersion']." version. ";
+		}
+		else {
+			echo "You have chosen the algorithms using all the Original descriptions and later descriptions treated individually (no composite description) with the ".$_SESSION['algoVersion']." version. ";
+		}
+		
+		if (isset($_POST['validity'])){ 
+			echo "Invalid descriptions are included.".'</br>';
+		} else {
+			echo "Invalid descriptions are not included.".'</br>';
+		}
+	?>
 	<tr><th><h2>Results</h2></th></tr>			
 		<tr>
 			<th>Species names</th>
@@ -44,6 +66,7 @@ include('includes/bas.php');
 		</tr>
 	<?php
 	$count = 0;
+	echo "test avt foreach";
 	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {
 	echo "spe :".$spe.'</br>';
 	$regex_test = preg_replace('/.*spe([0-9]*$)/','$1',$spe);
@@ -60,7 +83,7 @@ include('includes/bas.php');
 			switch($desc) {
 				case 'T': $descText = 'Original'; break;
 				case 'C': $descText = 'Composite'; break;
-				default : $descText = $desc; break;
+				default : $descText = ''; break;
 			}
 		}
 		// Recuperation du code de l'espece
@@ -86,7 +109,7 @@ include('includes/bas.php');
 			echo '<tr class="details">';
 				echo '<td colspan = "5"><table>';
 	
-		if(isset($res['details']['qt'])) { // if the character is quantitative
+		if(isset($res['details']['qt'])) {
 			echo '<tr>
 				<th colspan="2">Quantitative characters</th>
 				<th>Sample</th>
@@ -138,41 +161,34 @@ include('includes/bas.php');
 				while($row2 = mysql_fetch_assoc($q2)){
 					$code = $row2['code_char'];
 					$character = $row2['name_char'];
+					//$char = $code." - ".$character;
 					$nb_states = $row2['nb_states'];
 				}
-					
-				if($nb_states == 1) { // for the one state characters
-					echo '<tr>
+				echo '<tr>
 						<td class="center">'.$code.'</td>
 						<td>'.$character.'</td>
 						<td class="center">'.$details['sample'].'</td>
-						<td class="center">'.$details['species'].'</td>
-						<td class="center">-</td>
-						<td class="center">'.$details['state_score'].'</td>
-						<td class="center">'.$details['weight'].'</td>
-						<td class="center">'.$details['SW'].'</td>
-					</tr>';
-				} else {
-					echo '<tr>
-						<td class="center">'.$code.'</td>
-						<td>'.$character.'</td>
-						<td class="center">'.$details['sample'].'</td>
-						<td class="center">'.$details['species'].'</td>
-						<td class="center">'.$details['state_score'].'</td>
-						<td colspan = "3"></td>
-						</tr>';	
-						
-					if (isset($details['char_score'])) {
-						echo '<tr>
-							<td>RECAP</td>
-							<td ><i>'.substr($character,0,-2).'</i></td>
-							<td colspan = "3"></td>
-							<td class="center">'.$details['char_score'].'</td>
+						<td class="center">'.$details['species'].'</td>';
+						if($nb_states == 1) {
+							echo '<td class="center">-</td>
+							<td class="center">'.$details['state_score'].'</td>
 							<td class="center">'.$details['weight'].'</td>
-							<td class="center">'.$details['SW'].'</td>
-						</tr>';
-					}				
-				}
+							<td class="center">'.$details['SW'].'</td>';
+						} else {
+							echo ' <td class="center">'.$details['state_score'].'</td>
+									<td colspan = "3"></td>
+								</tr>';
+							if (isset($details['char_score'])) {
+								echo '<tr>
+								<td></td>
+								<td>'.substr($character,0,-2).'</td>
+								<td colspan = "3"></td>
+								<td class="center">'.$details['char_score'].'</td>
+								<td class="center">'.$details['weight'].'</td>
+								<td class="center">'.$details['SW'].'</td>
+								</tr>';
+							}
+						}
 			}
 		}
 		mysql_close();
