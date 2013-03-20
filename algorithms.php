@@ -179,7 +179,7 @@ function compositeAlgo30($genus_name, $validity_condition, $user_sample, $params
 						//echo "Ci ".$Ci.'</br>';
 						//echo "Ri ".$Ri.'</br>';
 			
-						if($Mxi == "NULL") { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
+						if($Mxi == "NULL" && $Mxi !=0) { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
 							$Wi = 0;
 							$Mxi = 0; 
 						} else {
@@ -347,7 +347,8 @@ function compositeAlgo31($genus_name, $validity_condition, $user_sample, $params
 					//echo "Ci ".$Ci.'</br>';
 					//echo "Ri ".$Ri.'</br>';
 				
-					if($Mxi == "NULL") { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
+					if($Mxi == "NULL" && $Mxi !=0) { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0		
+						//echo "Mxi NULL".'</br>';
 						$Wi = 0;
 						$Mxi = 0; 
 					} else {
@@ -517,7 +518,7 @@ function simpleAlgo30($genus_name, $only_original, $validity_condition, $user_sa
 				$Ci = (float)$params[''.$char_name.'']['correction'];
 				$Ri = (float)$params[''.$char_name.'']['range'];
 		
-				if($Mxi == "NULL") { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
+				if($Mxi == "NULL" && $Mxi!=0) { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
 					$Wi = 0;
 					$Mxi = 0;
 				} else {
@@ -698,13 +699,14 @@ function simpleAlgo31($genus_name, $only_original, $validity_condition, $user_sa
 			$Ci = (float)$params31[''.$char_name.'']['correction'];
 			$Ri = (float)$params31[''.$char_name.'']['range'];
 		
-			if($Mxi == "NULL") { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
+			if($Mxi == "NULL" && $Mxi!=0) { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
 				$Wi = 0;
 				$Mxi = 0;
 			} else {
 				$Wi = (float)$params31[''.$char_name.'']['weight'];
 			}
-			
+			echo "char name is :".$char_name.'</br>';
+			echo "weight :".$Wi.'</br>';
 			$temp = (abs($Mxi-$Msi) - $Ci) / ($Ri - $Ci);
 			//echo "char name is :".$char_name.'</br>';
 			//echo "temp = ".$temp.'</br>';
