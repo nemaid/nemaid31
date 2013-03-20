@@ -93,25 +93,6 @@ $genus_name = define_genus();
 	}
 	
 	
-	
-	function get_weight() {
-		var inputs = document.getElementsByTagName('input');
-		var ns_array = {};
-		
-		for(var i=0; i<inputs.length; i++) {
-			if(inputs[i].type == 'text' && inputs[i].name.indexOf("_w") !== -1) {
-				ns_array[inputs[i].name]=inputs[i].value;
-			}
-		}
-		$(window).data("array_weight", ns_array);
-		console.log(ns_array);
-		alert("ici");
-		//$.post('/includes/functions.php', ns_array);
-		//var styleattr=document.createAttribute("array_weight");
-		//styleattr.nodeValue=ns_array;
-		//return ns_array;
-	}
-	
 </script>
 <div id="new_sample">
 	<ul>
@@ -211,7 +192,7 @@ $genus_name = define_genus();
 			
 			<tr>
 				<th>Characters</th>				
-				<th>Values</th>
+				<th>Values (between 0 and 1 for each character)</th>
 			</tr>
 			<?php
 				$query = mysql_query('SELECT code_char, name_char, explanations, nb_states 
@@ -243,8 +224,7 @@ $genus_name = define_genus();
 		</table>
 		<br/><br/>
 		<input type="hidden" name="file_type" value="sample">
-		<input type="submit" value="Save sample" > <!--onclick="get_weight()"-->
-		<!--<a href="users_files/18-user20_sample.xml" class="pagination">Click here to download an example of the "CSV" file</a>-->
+		<input type="submit" value="Save sample" > 
 	</form>
 	</ul>
 </div>

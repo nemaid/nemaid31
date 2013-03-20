@@ -95,7 +95,7 @@ NEMAID can't help you any further. You must now check the published descriptions
 
 <u>Computation formulae</u><br />
 <span class="alinea1"> By default, Nemaid similarity coefficients are computed using a new formula, different from the old Nemaid 1 and 2 formulae, and different also from the formulae used in version 3.0. The old Nemaid 1 and 2 formulae are gone for good, but you can ask the program to use the version 3.0 formulae.<br /></span>
-<span class="alinea1">In the tab <b>Perform a comparison</b>, …??
+<span class="alinea1">In the tab <b>Perform a comparison</b>, â€¦??
 [Team: We'll have to see how and where in the interface the users can select the computation formula (3.0 or 3.1)]<br /></span>
 <br />
 
@@ -240,7 +240,7 @@ When a character has more than one state, the character score S<sub>1</sub> is c
 			<table>
 				<tr >
 					<td>
-						Nemaid integrates the variability observed for some characters among the species of any given genus. For example, in Helicotylenchus, it has been observed that the body length can vary by up to 150 µm when the progeny of a single parthenogenetic female are raised on different hosts plants (<a href="http://genisys.prd.fr/Fortuner_1984c.pdf">Fortuner, 1984</a>). In the Nemaid formulae, the specific variability is represented by corrections factors and a difference in measurements or percentages between an unknown sample and a species is accepted as indicating a dissimilarity only in so far that such a difference is larger than the correction factor of the corresponding character. <br/> If you don’t agree with the default values displayed in the tab “Your samples”, you are free to modify them.
+						Nemaid integrates the variability observed for some characters among the species of any given genus. For example, in Helicotylenchus, it has been observed that the body length can vary by up to 150 Âµm when the progeny of a single parthenogenetic female are raised on different hosts plants (<a href="http://genisys.prd.fr/Fortuner_1984c.pdf">Fortuner, 1984</a>). In the Nemaid formulae, the specific variability is represented by corrections factors and a difference in measurements or percentages between an unknown sample and a species is accepted as indicating a dissimilarity only in so far that such a difference is larger than the correction factor of the corresponding character. <br/> If you donâ€™t agree with the default values displayed in the tab â€œYour samplesâ€�, you are free to modify them.
 					<br />
 					</td>
 				</tr>
@@ -260,7 +260,7 @@ When a character has more than one state, the character score S<sub>1</sub> is c
 				<tr >
 					<td>
 						It seems obvious that some characters are more reliable than others. For example, it is generally very easy to measure the body length of a nematode whereas the orifice of the dorsal esophageal gland is often obscure, which means that total body length is more reliable than DGO. In the Nemaid formulae, each character is weighted according to its reliability.</br>
-If you don’t agree with the default values displayed in the tab “Your samples”, you are free to modify them. You can also chose to set all weights equal to 1, in which case the characters will no longer be weighted.
+If you donâ€™t agree with the default values displayed in the tab â€œYour samplesâ€�, you are free to modify them. You can also chose to set all weights equal to 1, in which case the characters will no longer be weighted.
 					<br />
 					</td>
 				</tr>
@@ -279,7 +279,7 @@ If you don’t agree with the default values displayed in the tab “Your sample
 			<table>
 				<tr >
 					<td>
-						A character range is the difference between the maximum and minimum values found in the data table for the selected genus. For example, in Helicotylenchus, the largest species (<i>H. coomansi</i>) has a body length of 1235 µm while the smallest species (<i>H. minutus</i>) is 400 µm long. In that genus, the range for body length is 1235-400 = 835 µm. Stylets are far shorter than the whole body and the range for stylet length is only 27 µm. It is even smaller (2) for ratio <b>c’</b>. Ranges are included in the Nemaid formulae in order to compare differences in characters with absolute values so widely different.</br>
+						A character range is the difference between the maximum and minimum values found in the data table for the selected genus. For example, in Helicotylenchus, the largest species (<i>H. coomansi</i>) has a body length of 1235 Âµm while the smallest species (<i>H. minutus</i>) is 400 Âµm long. In that genus, the range for body length is 1235-400 = 835 Âµm. Stylets are far shorter than the whole body and the range for stylet length is only 27 Âµm. It is even smaller (2) for ratio <b>câ€™</b>. Ranges are included in the Nemaid formulae in order to compare differences in characters with absolute values so widely different.</br>
 Ranges are objective values, computed by the program directly from the data in the data table for the selected genus and they cannot be modified by the users.
 					<br />
 					</td>
@@ -416,3 +416,12 @@ Ranges are objective values, computed by the program directly from the data in t
 			
 	
 </table>
+
+
+<ul>
+	<li> <a href="http://genisys.prd.fr/Fortuner_1983b.pdf"> Fortuner (1983): short presentation of the program </a> </li>
+	<li> <a href="http://genisys.prd.fr/Fortuner_Wong_1983.pdf"> Fortuner &amp; Wong (1983): NEMAID 1.0 user's manual </a> </li>
+	<li> <a href="http://genisys.prd.fr/Fortuner_Wong_1985.pdf"> Fortuner &amp; Wong (1985): published rationale for the program </a> </li>
+	<li> <a href="http://genisys.prd.fr/Fortuner_Ahmadi_1986.pdf"> Fortuner &amp; Ahmadi (1986): NEMAID 2.0  user's manual </a> </li>
+	<li> <a href="http://genisys.prd.fr/Fortuner_1986d.pdf"> Fortuner (1986): modification of the computation algorithm for qualitative characters </a> </li>
+</ul>
