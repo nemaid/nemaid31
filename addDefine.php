@@ -8,8 +8,9 @@
  */
 include('includes/haut.php');
 include('connectionSQL.php');
- 
+
 $idref = $_POST['id_ref'];
+$status = $_POST['status'];
 $code_spe = $_POST['code_spe'];
 $validity = $_POST['validity'];
 $pop_type = $_POST['pop_type'];
@@ -90,25 +91,25 @@ mysql_query("INSERT INTO`data` (
 	GENB1,	
 	GENB2,	
 	GENB3)
-VALUES ('','$LON','$STY','$DGO','$EXPO','$BAW','$TAIL','$TAN','$PHAS','$a','$c','$c_bis','$m','$v','$SPIC','$MALES',
-		'$DISC','$CAN','$HAB1','$HAB2','$LIP1','$LIP2','$INC1','$INC2','$LANN1',
-		'$LANN2','$LANN3','$KBS1','$KBS2','$KBS3','$TSH1','$TSH2','$TSH3','$TSH4','$GENB1','$GENB2','$GENB3')");
-		
+	VALUES ('','$LON','$STY','$DGO','$EXPO','$BAW','$TAIL','$TAN','$PHAS','$a','$c','$c_bis','$m','$v','$SPIC','$MALES',
+	'$DISC','$CAN','$HAB1','$HAB2','$LIP1','$LIP2','$INC1','$INC2','$LANN1',
+'$LANN2','$LANN3','$KBS1','$KBS2','$KBS3','$TSH1','$TSH2','$TSH3','$TSH4','$GENB1','$GENB2','$GENB3')");
+
 //révupération l'id data		
 $id_data = mysql_insert_id();
 //insertion dans la table define
-$sQuery=("INSERT INTO `define` (id_def, validity, pop_type, code_spe, id_data, id_ref)
-		VALUES ('','$validity', '$pop_type', '$code_spe', '$id_data', '$idref');");
-		
+$sQuery=("INSERT INTO `define` (id_def, validity, pop_type, code_spe, id_data, id_ref, status)
+VALUES ('','$validity', '$pop_type', '$code_spe', '$id_data', '$idref', '$status');");
+
 //test de la validité de la fonction SQL		
 if (mysql_query($sQuery))
 {
-echo ("<h2>Data saved successfully</h2>");
+	echo ("<h2>Data saved successfully</h2>");
 }
 else
 {
-echo "Error inserting record: " . mysql_error();
+	echo "Error inserting record: " . mysql_error();
 }	
-		
-				
+
+
 ?>

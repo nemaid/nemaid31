@@ -18,15 +18,18 @@ function request($char, $idData){
 }
 
 $idRef = $_GET["idref"];
-$result2 = mysql_query("SELECT title FROM `references` where id_ref=$idRef");
+$result2 = mysql_query("SELECT title, author, journal, year FROM `references` where id_ref=$idRef");
 
 $character = mysql_query("SELECT code_char, name_char, explanations from characters");
 
 $title = mysql_fetch_assoc($result2);
 $titre = $title['title'];
+$author = $title['author'];
+$journal = $title['journal'];
+$year = $title['year'];
 
 
-	echo "<h2>Description based on the article : </h2>  </br> <h3>$titre </h3>";
+	echo "<h2>Description based on the article : </h2>  </br> <h3>$titre  <br> $author <br> $year <br> $journal</h3>";
 ?>
 
 <form action="updateBDD.php" method="post">
