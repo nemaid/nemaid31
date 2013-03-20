@@ -43,8 +43,8 @@ include('includes/haut.php');
 			<br /><br />
 			<h3>Comparison parameters</h3>
 			<h4>Formula version</h4>
-			<input type="radio" name="formulaVersion" value="30" > Nemaid 3.0 algorithms <br/>
-			<input type="radio" name="formulaVersion" value="31" checked="true"> Nemaid 3.1 algorithms <br/>
+			<input type="radio" name="choixAlgoVersion" value="3.0" > Nemaid 3.0 algorithms <br/>
+			<input type="radio" name="choixAlgoVersion" value="3.1" checked="true"> Nemaid 3.1 algorithms <br/>
 			<h4>Validity of species</h4>
 			<input type="checkbox" name="validity" value="use_unvalid">Include invalid species  <br/> <br/>
 			<h4>Type of description</h4>
