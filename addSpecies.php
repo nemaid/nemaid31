@@ -57,7 +57,7 @@ $recuperation_species = mysql_query("SELECT code_spe, specie from species ORDER 
 
 ?>
         
-        name of the existing species :
+        Name of the existing species :
        <select id="id_spe" onchange="document.getElementById('id_spe_content').value=this.options[this.selectedIndex].value">
 		  <option name="default" value="">--Choose a species--</option> -->
   

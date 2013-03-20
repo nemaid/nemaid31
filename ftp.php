@@ -1,5 +1,6 @@
 <?php include('includes/haut.php');
 
+
 if(!(empty($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK && is_uploaded_file($_FILES['file']['tmp_name'])) && isset($_POST)){
 
 

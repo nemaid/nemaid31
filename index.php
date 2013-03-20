@@ -28,13 +28,13 @@ if(isset($_SESSION['user_id'])) {
 			<p>NEMAID is an identification aid that calculates the similarity between the specimens to be identified and all of the species in a genus. It does not give one answer but a list of species that are most similar to the unknown specimens. It is then up to the user to study the published descriptions of the likely candidates and make the final identification.</p>
 			<p>NEMAID was first implemented in 1983 and an improved version was proposed in 1985. Nemaid 3.0 was implemented in 2012 and the current version (3.1) in 2013. The earlier versions were described in the following publications:</p>
 			<ul>
-				<li>Fortuner (1983): short presentation of the program</li>
-				<li>Fortuner &amp; Wong (1983): NEMAID 1.0 user's manual</li>
-				<li>Fortuner &amp; Wong (1985): published rationale for the program</li>
-				<li>Fortuner &amp; Ahmadi (1986): NEMAID 2.0  user's manual</li>
-				<li>Fortuner (1986): modification of the computation algorithm for qualitative characters</li>
+				<li> <a href="http://genisys.prd.fr/Fortuner_1983b.pdf"> Fortuner (1983): short presentation of the program </a> </li>
+				<li> <a href="http://genisys.prd.fr/Fortuner_Wong_1983.pdf"> Fortuner &amp; Wong (1983): NEMAID 1.0 user's manual </a> </li>
+				<li> <a href="http://genisys.prd.fr/Fortuner_Wong_1985.pdf"> Fortuner &amp; Wong (1985): published rationale for the program </a> </li>
+				<li> <a href="http://genisys.prd.fr/Fortuner_Ahmadi_1986.pdf"> Fortuner &amp; Ahmadi (1986): NEMAID 2.0  user's manual </a> </li>
+				<li> <a href="http://genisys.prd.fr/Fortuner_1986d.pdf"> Fortuner (1986): modification of the computation algorithm for qualitative characters </a> </li>
 			</ul>
-			<p><b>Nemaid 3.0 is free, but you must be registered to use it.</b></p>
+			<p><b>Nemaid 3.1 is free, but you must be registered to use it.</b></p>
 		</td>
 	</tr>
 </table>

@@ -12,7 +12,7 @@ include("includes/haut.php");
 
 $name = $_GET["specie"];
 
-$result = mysql_query("SELECT define.id_ref, id_data, author, year, define.code_spe, specie FROM define, `references`, species WHERE specie='$name' AND species.code_spe = define.code_spe AND define.id_ref = `references`.id_ref ORDER BY year");
+$result = mysql_query("SELECT define.status, define.id_ref, id_data, author, year, define.code_spe, specie FROM define, `references`, species WHERE specie='$name' AND species.code_spe = define.code_spe AND define.id_ref = `references`.id_ref ORDER BY year");
 
 echo "<h2> $name </h2>";
 
@@ -20,6 +20,7 @@ echo "<table border='1'>
 <tr>
 <th>Author(s)</th>
 <th>Year</th>
+<th>Status</th>
 <th>Link to data</th>
 </tr>";
 
@@ -29,6 +30,7 @@ while($row = mysql_fetch_array($result))
 	echo "<tr>";
 	echo "<td>" .$row['author'] . "</td>";
 	echo "<td>" .$row['year'] . "</td>";
+	echo "<td>" .$row['status'] . "</td>";
 	
 	$data = $row['id_data'];
 	$idref = $row['id_ref'];
@@ -45,13 +47,13 @@ while($row = mysql_fetch_array($result))
 		$urlToDel = "deleteDefine.php?iddata=";
 		$urlToDel .= $data;
 		$urlToDel .="&iddef=".$iddef;
-		echo"<td>" . "<a href=$urlToDel target=$target>$nameURLToDel</a>" . "</td>";
+		$text = '"Are you sure to delete this definition ?"';
+		echo"<td>" . "<a href='$urlToDel' onclick = 'return confirm($text);' target=$target>$nameURLToDel</a>" . "</td>";
 	}
 	echo "</tr>";
 }
 
 echo "</table>";
-
 
 
 ?>

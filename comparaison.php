@@ -4,7 +4,7 @@ include('includes/haut.php');
 	$genus_name = define_genus();
 	$files_list = get_user_samples();
 ?>
-
+	
 	<div id="comparaison">
 		<h3>Sample selection</h3>
 		<form action="algorithms.php" method="post">

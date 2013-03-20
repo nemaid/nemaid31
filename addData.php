@@ -44,6 +44,11 @@ echo "<input type = 'hidden' name = 'code_spe' value = $code_spe>";
 echo "<input type = 'hidden' name = 'id_ref' value = $id_ref>";
 
 echo "<table border = '1'>";
+echo "<tr>";
+echo"<th> Status </th>";
+echo "<td> Enter the status of the definition </td>";
+echo"<td>" . "<input type = 'text' name ='status'> </td>";
+echo "</tr>"; 
 while ($row = mysql_fetch_array($result))
 {
 	echo "<tr>";
@@ -52,6 +57,8 @@ while ($row = mysql_fetch_array($result))
 	echo "<td>" . "<input type = 'text' name = '" . $row['code_char'] . "'> </td>";
 	echo "</tr>";
 }
+
+
 
 echo "</table>";
 ?>	

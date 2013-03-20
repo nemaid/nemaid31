@@ -37,7 +37,7 @@ else {
 <?php
  echo "<input type = 'hidden' name ='code_spe' value = $code_spe>";
  ?>
-<table>
+<table class ="no border">
 	<tr>
 		<td>Author(s) : </td>
 		<td><input required type="text" name="author" size = "100" ></td>
@@ -76,12 +76,14 @@ else {
 
 <?php
 
-$reference =mysql_query("SELECT id_ref, title from `references` ORDER BY title COLLATE latin1_german2_ci");
+$reference =mysql_query("SELECT id_ref, title , year , author from `references` ORDER BY title COLLATE latin1_german2_ci");
 while ($result = mysql_fetch_array($reference))
 {	
 	$title = $result['title'];
+	$year = $result['year'];
+	$author = $result['author'];
 	
-	echo '<option name = "id_ref" value='. $result['id_ref']. '>' . $title . '</option>' ;
+	echo '<option name = "id_ref" value='. $result['id_ref']. '>'. $year . " | " . $author .  " | "  . $title . '</option>' ;
 }        
 
 ?>
