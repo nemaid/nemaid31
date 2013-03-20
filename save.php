@@ -1,6 +1,7 @@
 <?php
 include('includes/haut.php');
 
+function 
 if(isset($_POST)) {
 	extract($_POST);
 	
