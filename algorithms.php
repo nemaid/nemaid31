@@ -705,8 +705,8 @@ function simpleAlgo31($genus_name, $only_original, $validity_condition, $user_sa
 			} else {
 				$Wi = (float)$params31[''.$char_name.'']['weight'];
 			}
-			echo "char name is :".$char_name.'</br>';
-			echo "weight :".$Wi.'</br>';
+			//echo "char name is :".$char_name.'</br>';
+			//echo "weight :".$Wi.'</br>';
 			$temp = (abs($Mxi-$Msi) - $Ci) / ($Ri - $Ci);
 			//echo "char name is :".$char_name.'</br>';
 			//echo "temp = ".$temp.'</br>';
