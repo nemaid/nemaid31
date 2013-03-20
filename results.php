@@ -34,9 +34,6 @@ include('includes/bas.php');
 ?>
 <div id="results"><table>
 	<?php 
-		
-		echo "result : res type".$_SESSION['res_type'].'</br>';
-		echo "result : algo vers".$_SESSION['algoVersion'].'</br>';
 		if($_SESSION['res_type'] == "composite") {
 			echo "You have chosen the algorithms using the Composites descriptions with the ".$_SESSION['algoVersion']." version. ";
 			}
@@ -66,11 +63,10 @@ include('includes/bas.php');
 		</tr>
 	<?php
 	$count = 0;
-	echo "test avt foreach";
 	foreach($results as $spe => $res) { if ($res['nb_char_used'] != 0) {
-	echo "spe :".$spe.'</br>';
+	//echo "spe :".$spe.'</br>';
 	$regex_test = preg_replace('/.*spe([0-9]*$)/','$1',$spe);
-	echo "spe ereg rep :".$regex_test.'</br>';
+	//echo "spe ereg rep :".$regex_test.'</br>';
 	connexion_bdd();
 		$species = '';
 		$genus_name = '';
@@ -79,7 +75,7 @@ include('includes/bas.php');
 		// Recuperation du numero de la description si necessaire
 		if($_SESSION['res_type'] == "all" || $_SESSION['res_type'] == "mixed") {
 			$desc = substr($spe,0,1);
-			echo "desc :".$desc.'</br>';
+			//echo "desc :".$desc.'</br>';
 			switch($desc) {
 				case 'T': $descText = 'Original'; break;
 				case 'C': $descText = 'Composite'; break;

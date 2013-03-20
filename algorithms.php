@@ -35,28 +35,24 @@
 	// Appel de l'algo de comparaison selon le type de description cochée par l'utilisateur
 	if(isset($_POST['choix']) && isset($_POST['choixAlgoVersion'])) { 
 		$_SESSION['res_type'] = $_POST['choix'];
-		echo "choix".$_POST['choix'].'</br>';
-		echo "choix algo".$_POST['choixAlgoVersion'].'</br>';
 		$_SESSION['algoVersion'] = $_POST['choixAlgoVersion'];
-		echo "res type".$_SESSION['res_type'].'</br>';
-		echo "algo vers".$_SESSION['algoVersion'].'</br>';
 		if ($_POST['choix'] == 'composite') {			
 			if ($_POST['choixAlgoVersion']=='3.0'){
-				echo "compositeAlgo30()".'</br>';
+				//echo "compositeAlgo30()".'</br>';
 				compositeAlgo30($genus_name, $validity_condition, $user_sample, $params);
 			}
 			else {
-				echo "compositeAlgo31()".'</br>';
+				//echo "compositeAlgo31()".'</br>';
 				compositeAlgo31($genus_name, $validity_condition, $user_sample, $params31);
 			}
 		} elseif($_POST['choix'] == 'mixed') {
 			if ($_POST['choixAlgoVersion']=='3.0'){
-				echo "mixed compositeAlgo30() & simpleAlgo30()".'</br>';
+				//echo "mixed compositeAlgo30() & simpleAlgo30()".'</br>';
 				compositeAlgo30($genus_name, $validity_condition, $user_sample, $params);	
 				simpleAlgo30($genus_name, true, $validity_condition, $user_sample, $params);
 			}
 			else {
-				echo "mixed compositeAlgo31() & simpleAlgo31()".'</br>';
+				//echo "mixed compositeAlgo31() & simpleAlgo31()".'</br>';
 				compositeAlgo31($genus_name, $validity_condition, $user_sample, $params31);
 				simpleAlgo31($genus_name, true, $validity_condition, $user_sample, $params31);
 			}
@@ -76,20 +72,20 @@
 		} else { // $_POST['choix'] == 'all ' ou 'originale'
 			if($_POST['choix'] == 'originale') {
 				if ($_POST['choixAlgoVersion']=='3.0'){
-					echo "simpleAlgo30() originale only".'</br>';
+					//echo "simpleAlgo30() originale only".'</br>';
 					simpleAlgo30($genus_name, true, $validity_condition, $user_sample, $params);
 				}
 				else {
-					echo "simpleAlgo31() originale only".'</br>';
+					//echo "simpleAlgo31() originale only".'</br>';
 					simpleAlgo31($genus_name, true, $validity_condition, $user_sample, $params31);
 				}
 			} else { // $_POST['choix'] == 'all'
 				if ($_POST['choixAlgoVersion']=='3.0'){
-					echo "simpleAlgo30() originale and later (no composite)".'</br>';
+					//echo "simpleAlgo30() originale and later (no composite)".'</br>';
 					simpleAlgo30($genus_name, false, $validity_condition, $user_sample, $params);
 				}
 				else {
-					echo "simpleAlgo31() originale and later (no composite)".'</br>';
+					//echo "simpleAlgo31() originale and later (no composite)".'</br>';
 					simpleAlgo31($genus_name, false, $validity_condition, $user_sample, $params31);
 				}
 			}
@@ -710,16 +706,18 @@ function simpleAlgo31($genus_name, $only_original, $validity_condition, $user_sa
 			}
 			
 			$temp = (abs($Mxi-$Msi) - $Ci) / ($Ri - $Ci);
-
+			//echo "char name is :".$char_name.'</br>';
+			//echo "temp = ".$temp.'</br>';
 			if ($temp <= 0) { // if the character was missing, the value was setted to 0 and the similarity score calculated ($temp) is negative or equal to zero so the value is set to 1 to neutralize it
 				$temp = 1;
 			} else {
 				$temp = 1 - $temp;
 			}
-		
+			//echo "temp after if else = ".$temp.'</br>';
 			if ($temp < 0) {
 				$temp = 0;
 			}
+			
 			
 			if ($char_nbStates_array[''.$char_name.''] == 1) { // si le caractère traité a un seul état (càd si c'est un caractère quantitatif ou qualitatif à un état	
 				$_SESSION['results'][$index]['coef'] += $temp*$Wi; // ajout de son score*Wi à la somme des Si*Wi
@@ -754,6 +752,11 @@ function simpleAlgo31($genus_name, $only_original, $validity_condition, $user_sa
 				if (substr($char_name, -1) == $char_nbStates_array[''.$char_name.'']) { // si c'est le dernier état du caractère
 		
 					$temp = ($curr_state_sum+$temp) / $char_nbStates_array[''.$char_name.'']; // moyenne des scores des différents états	
+					if ($temp >1)
+					{
+						$temp =1;
+					}
+					
 					$_SESSION['results'][$index]['coef'] += $temp*$Wi; // ajout du score du caractère à la somme des Si*Wi
 					
 					$weight_sum += $Wi; // ajout du Wi à la somme des Wi
