@@ -1,7 +1,7 @@
 <?php
 	session_start();
 // Chemin d'acc�s au dossier de l'application NEMAID 3.0
-define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31dev', true);
+define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31', true);
 
 // Donn�es relative a la FTP
 define('FTP_SERVER',   '46.218.144.14');
