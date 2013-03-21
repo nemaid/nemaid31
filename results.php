@@ -107,7 +107,7 @@ include('includes/bas.php');
 	
 		if(isset($res['details']['qt'])) {
 			echo '<tr>
-				<th colspan="2">Quantitative characters</th>
+				<th colspan="2">Quantitative and 1-state qualitatives characters</th>
 				<th>Sample</th>
 				<th>Species</th>
 				<th>Score</th>
@@ -139,7 +139,7 @@ include('includes/bas.php');
 		}
 		if(isset($res['details']['ql'])) { // if the character is qualitative
 			echo '<tr>
-					<th colspan="2">Qualitative characters</th>
+					<th colspan="2">Qualitative characters (2-state and more)</th>
 					<th>Sample</th>
 					<th>Species</th>
 					<th>State score</th>
