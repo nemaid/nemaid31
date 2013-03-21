@@ -168,6 +168,7 @@ $genus_name = define_genus();
 						echo '	<td><input type="text" name="'.$row[0].'_v"></td>';
 						echo '	<td><input class="qt_weight" type="text" name="'.$row[0].'_w" value="'.$row[3].'"></td>';
 						echo '	<td><input class="qt_correction" type="text" name="'.$row[0].'_c" value="'.$row[4].'"></td>';
+						echo '	<td><input  class="qt_correction" type="hidden" name="'.$row[0].'_r" value="'.$row[5].'"></td>';
 						echo '</tr>';
 					
 				}

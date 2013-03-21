@@ -1,7 +1,6 @@
 <?php
 include('includes/haut.php');
 
-function 
 if(isset($_POST)) {
 	extract($_POST);
 	
@@ -28,7 +27,7 @@ if(isset($_POST)) {
 		echo '<br><br>';
 		echo 'To save xml file on your own computer, click on "<u>Display it</u>" button. After displaying the file, right click anywhere on the page and save the file.';
 		echo '<br><br>';
-		echo '<p align="center"><img src="/nemaid31dev/images/screenXml.png" height="450" width="700" border="3" title="After displaying the file, right click on the page and save the file"></p>';
+		echo '<p align="center"><img src="/nemaid31/images/screenXml.png" height="450" width="700" border="3" title="After displaying the file, right click on the page and save the file"></p>';
 	} elseif ($file_type == 'genus') {
 		if(isset($genus) && $genus != '') {
 			$_SESSION['genus_n'] = $genus;

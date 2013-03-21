@@ -692,30 +692,33 @@ function simpleAlgo31($genus_name, $only_original, $validity_condition, $user_sa
 		
 		// pour chaque caractère de la description traitee
 		foreach ($char_codes_array as $char_name){
-		
-			$Mxi = (float)$user_sample[''.$char_name.'']; // récupération de la valeur du caractère rentrée par l'user (à partir du fichier xml généré suite à l'enregistrement des données entrées dans le formulaire)
-			
-			$Msi = (float)$row[''.$char_name.'']; // valeur connue du caractère dans l'espèce (<=> moyenne des valeurs présentes dans la bdd)	
-			$Ci = (float)$params31[''.$char_name.'']['correction'];
-			$Ri = (float)$params31[''.$char_name.'']['range'];
+			echo "char name is :".$char_name.'</br>';
+			$Mxi = (float)$user_sample[''.$char_name.'']['value']; // récupération de la valeur du caractère rentrée par l'user (à partir du fichier xml généré suite à l'enregistrement des données entrées dans le formulaire)
+			echo "Mxi =".$Mxi.'</br>';
+			$Msi = (float)$row[''.$char_name.'']; // valeur connue du caractère dans l'espèce (<=> moyenne des valeurs présentes dans la bdd)		
+			echo "Msi =".$Msi.'</br>';
+			$Ci = (float)$user_sample[''.$char_name.'']['correction'];
+			echo "Ci =".$Ci.'</br>';
+			$Ri = (string)$user_sample[''.$char_name.'']['range'];
+			echo "Ri =".$Ri.'</br>';
 		
 			if($Mxi == "NULL" && $Mxi!=0) { // if the character is missing the corresponding row in the xml file contain the "NULL" string so the value is set to 0
 				$Wi = 0;
 				$Mxi = 0;
 			} else {
-				$Wi = (float)$params31[''.$char_name.'']['weight'];
+				$Wi = (float)$user_sample[''.$char_name.'']['weight'];
 			}
-			//echo "char name is :".$char_name.'</br>';
-			//echo "weight :".$Wi.'</br>';
+			
+			echo "weight :".$Wi.'</br>';
+			
 			$temp = (abs($Mxi-$Msi) - $Ci) / ($Ri - $Ci);
-			//echo "char name is :".$char_name.'</br>';
-			//echo "temp = ".$temp.'</br>';
+
 			if ($temp <= 0) { // if the character was missing, the value was setted to 0 and the similarity score calculated ($temp) is negative or equal to zero so the value is set to 1 to neutralize it
 				$temp = 1;
 			} else {
 				$temp = 1 - $temp;
 			}
-			//echo "temp after if else = ".$temp.'</br>';
+
 			if ($temp < 0) {
 				$temp = 0;
 			}

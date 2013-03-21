@@ -1,7 +1,7 @@
 <?php
 	session_start();
 // Chemin d'acc�s au dossier de l'application NEMAID 3.0
-define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31dev', true);
+define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31dev_marie', true);
 
 // Donn�es relative a la FTP
 define('FTP_SERVER',   '46.218.144.14');
@@ -402,7 +402,7 @@ function get_xml_data($what,$file = '') {
 		case 'user_params' : case 'genus': $xml = simplexml_load_file("users_files/user".$_SESSION['user_id']."_params.xml"); break;
 		case 'default_params' : $xml = simplexml_load_file("default_params.xml"); break;
 		case 'default_params_31' : $xml = simplexml_load_file("default_params_31.xml"); break;
-		case 'user_sample' : $xml = simplexml_load_file("users_files/".$file); break;
+		case 'user_sample' : $xml = simplexml_load_file("users_files/".$file); echo "file is ".$file.'</br>'; break;
 		default: $xml = simplexml_load_file("default_params.xml"); break;
 	}
 	
@@ -425,9 +425,10 @@ function get_xml_data($what,$file = '') {
 		$sample = array();
 	
 		$char = $xml->xpath('/sample/char');
-		foreach( $char as $value ){
-			if($value == "NULL") $sample[(string)$value['name']] = "NULL";
-			else $sample[(string)$value['name']] = sprintf('%.2f',$value);
+		foreach( $char as $c ){
+			$sample[(string)$c['name']] = array('value' => sprintf('%.2f',$c->value),'weight' => sprintf('%.2f',$c->weight), 'correction' => sprintf('%.2f',$c->correction),'range' => "no range");	
+			//if($value == "NULL") $sample[(string)$value['name']] = "NULL";
+			//else $sample[(string)$value['name']] = sprintf('%.2f',$value);
 		}
 		return($sample);
 	}
@@ -481,6 +482,9 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 		$correction = $dom->createElement('correction');
 		$char->appendChild($correction);
 		
+		$range = $dom->createElement('range');
+		$char->appendChild($range);
+		
 		
 		// Attribute name
 		$char_name = $dom->createAttribute('name');
@@ -517,6 +521,15 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 		
 		$value_c = $dom->createTextNode($_POST[$row[0].'_c']);
 		$correction->appendChild($value_c);
+		
+		//range
+		$range_value = $dom->createAttribute('range');
+		$range->appendChild($range_value);//	$weight
+		$range_name_value = $dom->createTextNode(($row[0]).'_r');
+		$range_value->appendChild($range_name_value);
+		
+		$value_r = $dom->createTextNode($_POST[$row[0].'_r']);
+		$range->appendChild($value_r);
 		
 	}
 	
