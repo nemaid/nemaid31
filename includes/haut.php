@@ -39,7 +39,7 @@ include('includes/functions.php');
 										echo'<td class="menu"><a href="javascript:warningMessChangeTab(true,\'main.php\')">Home</a></td>';
 										echo'<td class="menu"><a href="select_genus.php">Select genus</a></td>';		
 										echo'<td class="menu"><a href="new_sample.php">Your samples</a></td>';
-										echo'<td class="menu"><a href="parameters.php">Set parameters</a></td>';
+										//echo'<td class="menu"><a href="parameters.php">Set parameters</a></td>';
 										echo'<td class="menu"><a href="comparaison.php">Perform a comparison</a></td>';
 
 										if(isset($_SESSION['admin'])){
