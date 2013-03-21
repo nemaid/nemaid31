@@ -1,7 +1,7 @@
 <?php
 	session_start();
 // Chemin d'acc�s au dossier de l'application NEMAID 3.0
-define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31dev_marie', true);
+define('ROOTPATH', 'http://'.$_SERVER['HTTP_HOST'].'/nemaid31', true);
 
 // Donn�es relative a la FTP
 define('FTP_SERVER',   '46.218.144.14');
@@ -464,11 +464,19 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 	$date->appendChild($date_value);
 	
 	connexion_bdd();
-	$query = mysql_query('SELECT code_char
-						  FROM characters 
-						  WHERE name_genus = "'.$genus.'"');
-		
+	$query = mysql_query('SELECT characters.code_char, ' .
+			'characters.weight, ' .
+			'characters31.weight, ' .
+			'characters.correction, ' .
+			'characters31.correction, ' .
+			'(characters.max-characters.min), ' .
+			'(characters31.max-characters31.min) ' .
+			'FROM characters, characters31 ' .
+			'WHERE characters.code_char = characters31.code_char and characters.name_genus = "'.$genus.'"');
+							  
+	$cpt = 0;	
 	while($row = mysql_fetch_row($query)){ // <char name="char_name">value</char>		
+		$cpt++;
 		// Element <char></char>
 		$char = $dom->createElement('char');
 		$root->appendChild($char);
@@ -479,11 +487,20 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 		$weight = $dom->createElement('weight');
 		$char->appendChild($weight);
 		
+		$weight31 = $dom->createElement('weight31');
+		$char->appendChild($weight31);
+		
 		$correction = $dom->createElement('correction');
 		$char->appendChild($correction);
 		
+		$correction31 = $dom->createElement('correction31');
+		$char->appendChild($correction31);
+		
 		$range = $dom->createElement('range');
 		$char->appendChild($range);
+		
+		$range31 = $dom->createElement('range31');
+		$char->appendChild($range31);
 		
 		
 		// Attribute name
@@ -510,8 +527,27 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 		$weight_name_value = $dom->createTextNode(($row[0]).'_w');
 		$weight_value->appendChild($weight_name_value);
 		
-		$value_w = $dom->createTextNode(get_weight($row[0]));
-		$weight->appendChild($value_w);
+		if (empty($_POST[$row[0].'_w'])){
+			$value_w = $dom->createTextNode($row[1]);
+			$weight->appendChild($value_w);
+		}else{
+			$value_w = $dom->createTextNode(get_weight($row[0]));
+			$weight->appendChild($value_w);
+		}
+		
+		//weight31
+		$weight_value31 = $dom->createAttribute('weight31');
+		$weight31->appendChild($weight_value31);
+		$weight_name_value31 = $dom->createTextNode(($row[0]).'_w');
+		$weight_value31->appendChild($weight_name_value31);
+		
+		if (empty($_POST[$row[0].'_w'])){
+			$value_w31 = $dom->createTextNode($row[2]);
+			$weight31->appendChild($value_w31);
+		}else{
+			$value_w31 = $dom->createTextNode(get_weight($row[0]));
+			$weight31->appendChild($value_w31);
+		}
 		
 		//correction
 		$correction_value = $dom->createAttribute('correction');
@@ -522,15 +558,47 @@ function save_user_sample($genus, $sample_id, $sample_date, $sample_loc, $sample
 		$value_c = $dom->createTextNode($_POST[$row[0].'_c']);
 		$correction->appendChild($value_c);
 		
+		//correction31
+		$correction_value31 = $dom->createAttribute('correction31');
+		$correction31->appendChild($correction_value31);//	$weight
+		$correction_name_value31 = $dom->createTextNode(($row[0]).'_c');
+		$correction_value31->appendChild($correction_name_value31);
+		
+		if (empty($_POST[$row[0].'_w'])){
+			$value_c31 = $dom->createTextNode($_POST[$row[0].'_c']);
+			$correction31->appendChild($value_c31);
+		}else{
+			$value_c31 = $dom->createTextNode($_POST[$row[0].'_c']);
+			$correction31->appendChild($value_c31);	
+		}
+		
 		//range
 		$range_value = $dom->createAttribute('range');
 		$range->appendChild($range_value);//	$weight
 		$range_name_value = $dom->createTextNode(($row[0]).'_r');
 		$range_value->appendChild($range_name_value);
 		
-		$value_r = $dom->createTextNode($_POST[$row[0].'_r']);
-		$range->appendChild($value_r);
+		if (empty($_POST[$row[0].'_w'])){
+			$value_r = $dom->createTextNode($row[5]);
+			$range->appendChild($value_r);
+		}else{
+			$value_r = $dom->createTextNode($row[5]);
+			$range->appendChild($value_r);
+		}
 		
+		//range31
+		$range_value31 = $dom->createAttribute('range31');
+		$range31->appendChild($range_value31);//	$weight
+		$range_name_value31 = $dom->createTextNode(($row[0]).'_r');
+		$range_value31->appendChild($range_name_value31);
+		
+		if (empty($_POST[$row[0].'_w'])){
+			$value_r31 = $dom->createTextNode($row[6]);
+			$range31->appendChild($value_r31);
+		}else{
+			$value_r31 = $dom->createTextNode($row[6]);
+			$range31->appendChild($value_r31);
+		}
 	}
 	
 	$name = "users_files/".$_SESSION['nb_sample_saved']."-user".$_SESSION['user_id']."_sample";

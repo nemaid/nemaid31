@@ -3,7 +3,6 @@ include('includes/haut.php');
 
 if(isset($_POST)) {
 	extract($_POST);
-	
 	/* file_type = champs caché dans les formulaires (au niveau des boutons submit)
 	 * Permet de savoir quel type de fichier doit être sauvegardé
 	 * parameters => fichier contenant les parametres de d'utilisateur

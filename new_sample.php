@@ -96,6 +96,7 @@ $genus_name = define_genus();
 </script>
 <div id="new_sample">
 	<ul>
+	
 	<li><h3>Upload a previously saved sample file: </h3></li>
 		<form action="ftp.php" method="post" enctype="multipart/form-data">
 			<input type="file" name="file" />
